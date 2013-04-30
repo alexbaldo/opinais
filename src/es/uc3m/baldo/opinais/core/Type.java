@@ -1,4 +1,4 @@
-package es.uc3m.opinais;
+package es.uc3m.baldo.opinais.core;
 /**
  * Type
  * Represents the type of a detector, which may

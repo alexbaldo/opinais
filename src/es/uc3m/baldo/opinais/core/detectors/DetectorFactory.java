@@ -1,4 +1,8 @@
-package es.uc3m.opinais;
+package es.uc3m.baldo.opinais.core.detectors;
+
+import es.uc3m.baldo.opinais.core.Bit;
+import es.uc3m.baldo.opinais.core.Type;
+
 /**
  * DetectorFactory
  * Makes a new detector object based on two probabilistic
