@@ -5,7 +5,6 @@ import java.util.Arrays;
 import es.uc3m.baldo.opinais.core.Bit;
 import es.uc3m.baldo.opinais.core.Individual;
 import es.uc3m.baldo.opinais.core.Type;
-import es.uc3m.baldo.opinais.utils.GrayCode;
 
 /**
  * Detector
@@ -102,6 +101,10 @@ public class Detector implements Comparable<Detector> {
 	public void setFitness (double fitness) {
 		this.fitness = fitness;
 	}
+	
+	public double getFitness () {
+		return fitness;
+	}
 
 	@Override
 	public int compareTo (Detector o) {
@@ -152,10 +155,13 @@ public class Detector implements Comparable<Detector> {
 
 	@Override
 	public String toString() {
+		char[] schema = new char[pattern.length];
+		for (int i = 0; i < schema.length; i++) {
+			schema[i] = mask[i] == Bit.ONE? '#' : pattern[i].toString().charAt(0);
+		}
 		return "Detector [type=" + type + ", threshold="
-				+ Arrays.toString(threshold) + ", decodedThreshold="
-				+ decodedThreshold + ", pattern=" + Arrays.toString(pattern)
-				+ ", mask=" + Arrays.toString(mask) + ", fitness=" + fitness
+				+ decodedThreshold + ", schema=" + Arrays.toString(schema)
+				+ ", fitness=" + fitness
 				+ "]";
 	}
 }

@@ -1,16 +1,18 @@
 package es.uc3m.baldo.opinais.core;
 
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Properties;
+import java.util.Map;
 import java.util.Set;
 
 import es.uc3m.baldo.opinais.core.detectors.Detector;
 import es.uc3m.baldo.opinais.core.detectors.DetectorFactory;
+import es.uc3m.baldo.opinais.core.operators.CrossoverOperator;
+import es.uc3m.baldo.opinais.core.operators.MutationOperator;
+import es.uc3m.baldo.opinais.selectors.RouletteSelector;
 
 public class EvolutionaryAlgorithm {
 	
@@ -22,7 +24,6 @@ public class EvolutionaryAlgorithm {
 	
 	// Properties.
 	private int featuresLength;
-	private int genomeLength;
 	private int speciesSize;
 	private double typeBias;
 	private double generalityBias;
@@ -34,32 +35,41 @@ public class EvolutionaryAlgorithm {
 	 * Builds a new evolutionary algorithm.
 	 * @param speciesSize the size of the population of detectors.
 	 */
-	public EvolutionaryAlgorithm (String propertiesFile) {
-		readProperties(propertiesFile);
+	public EvolutionaryAlgorithm (int featuresLength, int speciesSize, double typeBias, double generalityBias, 
+								  double crossoverRate, double mutationRate, double maxGenerations, 
+								  Set<Individual> individuals) {
+		this.featuresLength = featuresLength;
+		this.speciesSize = speciesSize;
+		this.typeBias = typeBias;
+		this.generalityBias = generalityBias;
+		this.crossoverRate = crossoverRate;
+		this.mutationRate = mutationRate;
+		this.maxGenerations = maxGenerations;
 		this.detectors = new ArrayList<Detector>(speciesSize);
-	}
-	
-	public void setIndividuals (Set<Individual> individuals) {
 		this.individuals = individuals;
 	}
 	
-	public void run () {
+	public Map<Type, Detector> run () {
 		
 		// Creates the initial population.
 		initializePopulation();
 		
-		// Calculates simple fitness for each detector.
-		// Simple fitness is defined as fitness by individual matching,
-		//	before any cooperation is taking place.
-		calculateFitness(detectors);
-		Collections.sort(detectors);
-
 		// Splits the initial population in two lists.
 		List<Detector> selfDetectors = filterDetectors(detectors, Type.SELF);
 		List<Detector> nonSelfDetectors = filterDetectors(detectors, Type.NON_SELF);
 
+		// Initializes the evolutionary operators.
+		CrossoverOperator crossover = new CrossoverOperator(crossoverRate);
+		MutationOperator mutation = new MutationOperator(mutationRate);
+		
 		int generation = 0;
-		//while (!stop(generation)) {
+		while (!stop(generation)) {
+			// Calculates simple fitness for each detector.
+			// Simple fitness is defined as fitness by individual matching,
+			//	before any cooperation is taking place.
+			calculateFitness(selfDetectors);
+			calculateFitness(nonSelfDetectors);
+			
 			// Evolves the self detectors, cooperating with the best non-self detector.
 			for (Detector selfDetector : selfDetectors) {
 				calculateFitness(selfDetector, nonSelfDetectors.get(0));
@@ -73,10 +83,42 @@ public class EvolutionaryAlgorithm {
 			Collections.sort(nonSelfDetectors);
 			
 			// Generates the new populations.
+			RouletteSelector roulette;
+			List<Detector> newSelfDetectors = new LinkedList<Detector>();
+			roulette = new RouletteSelector(selfDetectors);
+			while (newSelfDetectors.size() < selfDetectors.size()) {
+				Detector parent1 = roulette.selectDetector();
+				Detector parent2 = roulette.selectDetector();
+				Detector child = crossover.crossover(parent1, parent2);
+				child = mutation.mutate(child);
+				newSelfDetectors.add(child);
+			}
+			
+			List<Detector> newNonSelfDetectors = new LinkedList<Detector>();
+			roulette = new RouletteSelector(nonSelfDetectors);
+			while (newNonSelfDetectors.size() < nonSelfDetectors.size()) {
+				Detector parent1 = roulette.selectDetector();
+				Detector parent2 = roulette.selectDetector();
+				Detector child = crossover.crossover(parent1, parent2);
+				child = mutation.mutate(child);
+				newNonSelfDetectors.add(child);
+			}
 			
 			// Increases the generations counter.
 			generation++;
-		//}
+		}
+		
+		// Prints the ultimate detectors.
+		calculateFitness(selfDetectors);
+		calculateFitness(nonSelfDetectors);
+		System.out.println("\t" + selfDetectors.get(0));
+		System.out.println("\t" + nonSelfDetectors.get(0));
+		
+		Map<Type, Detector> bestDetectors = new HashMap<Type, Detector>();
+		bestDetectors.put(Type.SELF, selfDetectors.get(0));
+		bestDetectors.put(Type.NON_SELF, nonSelfDetectors.get(0));
+		
+		return bestDetectors;
 	}
 	
 	private void calculateFitness (List<Detector> detectors) {
@@ -102,6 +144,8 @@ public class EvolutionaryAlgorithm {
 			// Stores the fitness.
 			detector.setFitness(matches - mistakes);
 		}
+		
+		Collections.sort(detectors);
 	}
 	
 	private void calculateFitness (Detector detector, Detector foreignDetector) {
@@ -146,7 +190,7 @@ public class EvolutionaryAlgorithm {
 	}
 	
 	private boolean stop (int generation) {
-		if (generation > 0 && generation > this.maxGenerations) {
+		if (this.maxGenerations > 0 && generation > this.maxGenerations) {
 			return true;
 		}
 		return false;
@@ -156,27 +200,5 @@ public class EvolutionaryAlgorithm {
 		for (int i = 0; i < this.speciesSize; i++) {
 			this.detectors.add(DetectorFactory.makeDetector(this.featuresLength, this.typeBias, this.generalityBias));
 		}
-	}
-	
-	/**
-	 * Reads the properties from a file and stores them.
-	 * @param propertiesFile the path for the properties file.
-	 */
-	private void readProperties (String propertiesFile) {
-		Properties properties = new Properties();
-		try {
-			properties.load(new FileReader(propertiesFile));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
-		this.featuresLength = Integer.parseInt(properties.getProperty("featuresLength"));
-		this.genomeLength = 8 + 2 * featuresLength;
-		this.speciesSize = Integer.parseInt(properties.getProperty("speciesSize"));
-		this.typeBias = Double.parseDouble(properties.getProperty("typeBias"));
-		this.generalityBias = Double.parseDouble(properties.getProperty("generalityBias"));
-		this.crossoverRate = Double.parseDouble(properties.getProperty("crossoverRate"));
-		this.mutationRate = Double.parseDouble(properties.getProperty("mutationRate")) / genomeLength; 
-		this.maxGenerations = Double.parseDouble(properties.getProperty("maxGenerations"));
 	}
 }
