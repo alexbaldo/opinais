@@ -29,14 +29,14 @@ public class EvolutionaryAlgorithm {
 	private double generalityBias;
 	private double crossoverRate;
 	private double mutationRate;
-	private double maxGenerations;
+	private int maxGenerations;
 	
 	/**
 	 * Builds a new evolutionary algorithm.
 	 * @param speciesSize the size of the population of detectors.
 	 */
 	public EvolutionaryAlgorithm (int featuresLength, int speciesSize, double typeBias, double generalityBias, 
-								  double crossoverRate, double mutationRate, double maxGenerations, 
+								  double crossoverRate, double mutationRate, int maxGenerations, 
 								  Set<Individual> individuals) {
 		this.featuresLength = featuresLength;
 		this.speciesSize = speciesSize;
@@ -103,6 +103,11 @@ public class EvolutionaryAlgorithm {
 				child = mutation.mutate(child);
 				newNonSelfDetectors.add(child);
 			}
+			
+			if (generation % (maxGenerations / 100) == 0) {
+				System.out.println("\t" + generation / (maxGenerations / 100) + "% completed.");
+			}
+				
 			
 			// Increases the generations counter.
 			generation++;

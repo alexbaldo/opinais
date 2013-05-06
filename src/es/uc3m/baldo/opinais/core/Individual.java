@@ -3,24 +3,27 @@ package es.uc3m.baldo.opinais.core;
 import java.util.Arrays;
 
 /**
- * Individual
- * Represents an individual in the Aritificial Immune
- * 	System. This individual is represented by a feature
- * 	vector, which is indeed a bit array.
+ * Individual.
+ * <p>Represents an individual in the Aritificial Immune
+ * System. This individual is represented by a feature
+ * vector, which is indeed a bit array.</p>
  * 
  * @author Alejandro Baldominos
- *
  */
 public class Individual {
 
-	// Individual type.
+	/*
+	 *  Individual type.
+	 */
 	public Type type;
 	
-	// Feature vector.
+	/*
+	 *  Features vector.
+	 */
 	public Bit[] bits;
 
 	/**
-	 * Builds a new Individual instance.
+	 * <p>Builds a new Individual instance.</p>
 	 * @param type the individual type.
 	 * @param bits an array of bits representing the individual.
 	 */
@@ -30,15 +33,9 @@ public class Individual {
 		System.arraycopy(bits, 0, this.bits, 0, bits.length);
 	}
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + Arrays.hashCode(bits);
-		result = prime * result + ((type == null) ? 0 : type.hashCode());
-		return result;
-	}
-
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -55,6 +52,21 @@ public class Individual {
 		return true;
 	}
 	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + Arrays.hashCode(bits);
+		result = prime * result + ((type == null) ? 0 : type.hashCode());
+		return result;
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public String toString() {
 		return "Individual [type=" + type + ", bits=" + Arrays.toString(bits)

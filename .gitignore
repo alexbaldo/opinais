@@ -5,6 +5,7 @@
 .project
 .classpath
 .settings
+.metadata
 bin
 
 ## generic files to ignore

@@ -11,6 +11,7 @@ public class OpinaisProperties {
 	
 	public int featuresLength;
 	public int speciesSize;
+	public int individualsSize;
 	public double typeBias;
 	public double generalityBias;
 	public double crossoverRate;
@@ -37,6 +38,7 @@ public class OpinaisProperties {
 			properties.load(new FileReader(propertiesFile));
 			opinaisProps.featuresLength = Integer.parseInt(properties.getProperty("featuresLength"));			
 			opinaisProps.speciesSize = Integer.parseInt(properties.getProperty("speciesSize"));	
+			opinaisProps.individualsSize = Integer.parseInt(properties.getProperty("individualsSize"));	
 			opinaisProps.typeBias = Double.parseDouble(properties.getProperty("typeBias"));	
 			opinaisProps.generalityBias = Double.parseDouble(properties.getProperty("generalityBias"));	
 			opinaisProps.crossoverRate = Double.parseDouble(properties.getProperty("crossoverRate"));	

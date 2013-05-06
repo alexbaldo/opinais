@@ -8,37 +8,44 @@ import es.uc3m.baldo.opinais.core.Type;
 
 /**
  * Detector
- * Represents a detector in the Artificial Immune
- * 	System. The detector is specialized in detecting
- * 	either self or nonself individuals, and is
- * 	represented by an schema.
+ * <p>Represents a detector in the Artificial Immune
+ * System. The detector is specialized in detecting
+ * either self or nonself individuals, and is
+ * represented by an schema.</p>
  * 
  * @author Alejandro Baldominos
- *
  */
 public class Detector implements Comparable<Detector> {
 
-	// Detector type.
+	/*
+	 *  Detector type.
+	 */
 	public Type type;
 	
-	// Threshold, represented in Gray code.
+	/*
+	 *  Threshold, represented in Gray code.
+	 */
 	public Bit[] threshold;
 	public double decodedThreshold;
 	
-	// Detector schema, represented as pattern and mask.
+	/*
+	 *  Detector schema, represented as pattern and mask.
+	 */
 	public Bit[] pattern;
 	public Bit[] mask;
 	
-	// Fitness
+	/*
+	 *  Fitness
+	 */
 	private double fitness;
 
 	/**
-	 * Builds a new Detector instance.
+	 * <p>Builds a new Detector instance.</p>
 	 * @param type the detector type (either SELF or NON_SELF).
 	 * @param threshold a number in Gray encoding, so that 
-	 * 	<i>threshold</i> / 255 represents the minimum percentage 
-	 * 	of bit matches between the schema and the individual
-	 * 	to consider a match.
+	 * <em>threshold</em> / 255 represents the minimum percentage 
+	 * of bit matches between the schema and the individual
+	 * to consider a match.
 	 * @param pattern an array of bits representing the pattern.
 	 * @param mask an array of bits, containing a 1 in those positions
 	 * 	which are considered as wildcards.
@@ -55,12 +62,12 @@ public class Detector implements Comparable<Detector> {
 	}
 		
 	/**
-	 * Checks whether the detector actually detects the individual.
-	 * 	This will happen when the percentage of bit matches (ignoring
-	 * 	wildcards) exceeds the threshold.
+	 * <p>Checks whether the detector actually detects the individual.</p>
+	 * <p>This will happen when the percentage of bit matches (ignoring
+	 * wildcards) exceeds the threshold.</p>
 	 * @param individual the individual which is tried to be matched.
 	 * @return true if the detector matches the individual,
-	 * 	false otherwise.
+	 * false otherwise.
 	 */
 	public double match (Individual individual) {
 		// Stores the number of bit matches.
@@ -106,27 +113,17 @@ public class Detector implements Comparable<Detector> {
 		return fitness;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public int compareTo (Detector o) {
 		return Double.compare(o.fitness, this.fitness);
 	}
 	
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		long temp;
-		temp = Double.doubleToLongBits(decodedThreshold);
-		result = prime * result + (int) (temp ^ (temp >>> 32));
-		temp = Double.doubleToLongBits(fitness);
-		result = prime * result + (int) (temp ^ (temp >>> 32));
-		result = prime * result + Arrays.hashCode(mask);
-		result = prime * result + Arrays.hashCode(pattern);
-		result = prime * result + Arrays.hashCode(threshold);
-		result = prime * result + ((type == null) ? 0 : type.hashCode());
-		return result;
-	}
-
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -152,7 +149,29 @@ public class Detector implements Comparable<Detector> {
 			return false;
 		return true;
 	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		long temp;
+		temp = Double.doubleToLongBits(decodedThreshold);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		temp = Double.doubleToLongBits(fitness);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		result = prime * result + Arrays.hashCode(mask);
+		result = prime * result + Arrays.hashCode(pattern);
+		result = prime * result + Arrays.hashCode(threshold);
+		result = prime * result + ((type == null) ? 0 : type.hashCode());
+		return result;
+	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public String toString() {
 		char[] schema = new char[pattern.length];

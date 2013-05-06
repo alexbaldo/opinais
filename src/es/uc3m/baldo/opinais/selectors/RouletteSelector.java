@@ -6,17 +6,12 @@ import es.uc3m.baldo.opinais.core.detectors.Detector;
 
 /**
  * RouletteSelector.
- * Selects one individual from the population randomly, but 
- * in a fitness-proportional way.
+ * <p>Selects one individual from the population randomly, but 
+ * in a fitness-proportional way.</p>
  * 
  * @author Alejandro Baldominos
  */
-public class RouletteSelector {
-
-	/*
-	 * The list of detectors, sorted by descending fitness.
-	 */
-	private List<Detector> population;
+public class RouletteSelector extends AbstractSelector {
 	
 	/*
 	 * The sum of fitness for all the detectors.
@@ -24,18 +19,18 @@ public class RouletteSelector {
 	private double totalCumulativeFitness;
 	
 	/**
-	 * Builds a new roulette selector.
+	 * <p>Builds a new roulette selector.</p>
 	 * @param population the list of detectors, which must be sorted by descending fitness.
 	 */
 	public RouletteSelector (List<Detector> population) {
-		this.population = population;
+		super(population);
 		this.totalCumulativeFitness = calculateTotalCumulativeFitness(population);
 	}
 	
 	/**
-	 * Selects a detector from the population. This selection is performed
+	 * <p>Selects a detector from the population. This selection is performed
 	 * randomly, but preferring those detectors which have a higher fitness
-	 * value.
+	 * value.</p>
 	 * @return the selected detector.
 	 */
 	public Detector selectDetector () {
@@ -56,14 +51,12 @@ public class RouletteSelector {
 			}
 		}
 		
-		// This case is actually impossible, but to prevent the warning,
-		// in the (theoretical rather than practical) case that a detector
-		// was not returned before, the last one in the list is returned.
-		return population.get(population.size() - 1);		
+		// This case is actually impossible.
+		return null;		
 	}
 	
 	/**
-	 * Calculates the total sum of fitness of all detectors.
+	 * <p>Calculates the total sum of fitness of all detectors.</p>
 	 * @param population a list of detectors.
 	 * @return the sum of all fitness for all detectors.
 	 */

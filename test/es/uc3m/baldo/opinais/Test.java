@@ -1,12 +1,17 @@
-package es.uc3m.baldo.opinais.core;
+package es.uc3m.baldo.opinais;
 
 import java.io.File;
 import java.util.Map;
 import java.util.Set;
 
+import es.uc3m.baldo.opinais.core.EvolutionaryAlgorithm;
+import es.uc3m.baldo.opinais.core.Individual;
+import es.uc3m.baldo.opinais.core.OpinaisProperties;
+import es.uc3m.baldo.opinais.core.Type;
 import es.uc3m.baldo.opinais.core.detectors.Detector;
 import es.uc3m.baldo.opinais.experimenter.Experimenter;
-import es.uc3m.baldo.opinais.ir.TextIndividualFactory;
+import es.uc3m.baldo.opinais.ir.TextIndividualsFactory;
+import es.uc3m.baldo.opinais.ir.items.Tweet;
 import es.uc3m.baldo.opinais.ir.readers.TweetReader;
 
 public class Test {
@@ -18,8 +23,9 @@ public class Test {
 		System.out.println("Loading configuration...");
 		OpinaisProperties props = OpinaisProperties.readProperties("opinais.properties");
 
-		Set<Individual> individuals = TextIndividualFactory.makeIndividuals(new File(props.inputFile), new TweetReader(), 
-																			props.preprocessors, props.featuresLength);
+		TextIndividualsFactory<Tweet> factory = new TextIndividualsFactory<>();
+		Set<Individual> individuals = factory.makeIndividuals(new File(props.inputFile), new TweetReader(), 
+															  props.preprocessors, props.featuresLength, props.individualsSize);
 		
 		System.out.println("Generating the training and test sets...");
 		Experimenter experimenter = new Experimenter(individuals, props.testPct);

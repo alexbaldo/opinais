@@ -9,8 +9,8 @@ import es.uc3m.baldo.opinais.ir.items.TextItem;
 
 /**
  * TextVectorizer.
- * Vectorizes a text item. To do so, the vectorizer requires a sorted list of words
- * and returns an array of bits specifying whether the item contains each of these words.
+ * <p>Vectorizes a text item. To do so, the vectorizer requires a sorted list of words
+ * and returns an array of bits specifying whether the item contains each of these words.</p>
  * 
  * @author Alejandro Baldominos
  */
@@ -20,7 +20,7 @@ public class TextVectorizer implements Vectorizer<TextItem> {
 	 * Text separator, usually one or more empty spaces.
 	 * It is compiled for efficiency purposes.
 	 */
-	public static final Pattern SEPARATOR = Pattern.compile(" +");
+	private static final Pattern SEPARATOR = Pattern.compile(" +");
 	
 	/*
 	 * The sorted list of words is represented as a map, where
@@ -29,12 +29,12 @@ public class TextVectorizer implements Vectorizer<TextItem> {
 	 * as searching whether a word is contained in a hashed map is 
 	 * far more efficient than doing so in a list.
 	 */
-	public Map<String, Integer> features;
+	private Map<String, Integer> features;
 	
 	/**
-	 * Builds a new text vectorized, which receives as input
+	 * <p>Builds a new text vectorized, which receives as input
 	 * an array of features (words), which is converted to
-	 * the map representation.
+	 * the map representation.</p>
 	 * @param features the array of words which represent
 	 * the individual features.
 	 */
@@ -46,11 +46,11 @@ public class TextVectorizer implements Vectorizer<TextItem> {
 	}
 	
 	/**
-	 * Vectorizes the text item.
-	 * To do so, an array of bits is built, where a 1 in the
+	 * <p>Vectorizes the text item.</p>
+	 * <p>To do so, an array of bits is built, where a 1 in the
 	 * position <i>i</i> means that the word at position <i>i</i>
 	 * in the original feature array is present in the item, and a
-	 * 0 represent the opposite case.
+	 * 0 represent the opposite case.</p>
 	 * @param item the text item to be vectorized.
 	 * @return an array of bits representing the text item.
 	 */
