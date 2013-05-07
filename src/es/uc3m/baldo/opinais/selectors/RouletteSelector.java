@@ -8,6 +8,8 @@ import es.uc3m.baldo.opinais.core.detectors.Detector;
  * RouletteSelector.
  * <p>Selects one individual from the population randomly, but 
  * in a fitness-proportional way.</p>
+ * <p>For the roulette selector to work, all fitness must 
+ * be positive.</p>
  * 
  * @author Alejandro Baldominos
  */
@@ -33,10 +35,11 @@ public class RouletteSelector extends AbstractSelector {
 	 * value.</p>
 	 * @return the selected detector.
 	 */
+	@Override
 	public Detector selectDetector () {
 		// Generates a random number between zero and the total sum of fitness.
 		double rand = Math.random() * totalCumulativeFitness;
-		
+
 		// Stores the cumulative fitness.
 		double cumulative = 0;
 		

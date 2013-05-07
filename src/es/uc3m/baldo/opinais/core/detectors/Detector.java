@@ -7,15 +7,17 @@ import es.uc3m.baldo.opinais.core.Individual;
 import es.uc3m.baldo.opinais.core.Type;
 
 /**
- * Detector
+ * Detector.
  * <p>Represents a detector in the Artificial Immune
- * System. The detector is specialized in detecting
+ * System, which simulates an antibody in a natural
+ * immune system.</p>
+ * <p>The detector is specialized in detecting
  * either self or nonself individuals, and is
  * represented by an schema.</p>
  * 
  * @author Alejandro Baldominos
  */
-public class Detector implements Comparable<Detector> {
+public class Detector implements Comparable<Detector>, Cloneable {
 
 	/*
 	 *  Detector type.
@@ -48,17 +50,14 @@ public class Detector implements Comparable<Detector> {
 	 * to consider a match.
 	 * @param pattern an array of bits representing the pattern.
 	 * @param mask an array of bits, containing a 1 in those positions
-	 * 	which are considered as wildcards.
+	 * which are considered as wildcards.
 	 */
 	public Detector (Type type, Bit[] threshold, Bit[] pattern, Bit[] mask) {
 		this.type = type;
-		this.threshold = new Bit[threshold.length];
-		System.arraycopy(threshold, 0, this.threshold, 0, threshold.length);
+		this.threshold = threshold;
 		this.decodedThreshold = decodeThreshold();
-		this.pattern = new Bit[pattern.length];
-		System.arraycopy(pattern, 0, this.pattern, 0, pattern.length);
-		this.mask = new Bit[mask.length];
-		System.arraycopy(mask, 0, this.mask, 0, mask.length);
+		this.pattern = pattern;
+		this.mask = mask;
 	}
 		
 	/**
@@ -182,5 +181,18 @@ public class Detector implements Comparable<Detector> {
 				+ decodedThreshold + ", schema=" + Arrays.toString(schema)
 				+ ", fitness=" + fitness
 				+ "]";
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public Detector clone () {
+		// Clones the bit arrays.
+		Bit[] threshold = this.threshold.clone();
+		Bit[] pattern = this.pattern.clone();
+		Bit[] mask = this.mask.clone();
+		
+		return new Detector(type, threshold, pattern, mask);
 	}
 }

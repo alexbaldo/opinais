@@ -1,4 +1,5 @@
 package es.uc3m.baldo.opinais.core;
+
 /**
  * Bit.
  * <p>Represents a bit in a feature vector, which may take
@@ -8,12 +9,12 @@ package es.uc3m.baldo.opinais.core;
  */
 public enum Bit {
 	/**
-	 * 0
+	 * <p>0</p>
 	 */
 	ZERO	(false),
 	
 	/**
-	 * 1
+	 * <p>1</p>
 	 */
 	ONE		(true);
 	
@@ -31,7 +32,7 @@ public enum Bit {
 	}
 	
 	/**
-	 * <p>Perform the XOR operation over two bits.</p>
+	 * <p>Performs the XOR operation over two bits.</p>
 	 * @param other the secong bit.
 	 * @return the result of the XOR operation over the two bits.
 	 */

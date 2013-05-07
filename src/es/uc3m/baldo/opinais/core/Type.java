@@ -1,4 +1,5 @@
 package es.uc3m.baldo.opinais.core;
+
 /**
  * Type.
  * <p>Represents the type of a detector, which may
@@ -10,12 +11,12 @@ package es.uc3m.baldo.opinais.core;
  */
 public enum Type {
 	/**
-	 * Self individuals.
+	 * <p>Self individuals.</p>
 	 */
 	SELF, 
 	
 	/**
-	 * Non-Self individuals.
+	 * <p>Non-Self individuals.</p>
 	 */
 	NON_SELF
 }

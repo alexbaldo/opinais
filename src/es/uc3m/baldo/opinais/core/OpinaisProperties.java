@@ -7,19 +7,85 @@ import java.util.Properties;
 
 import es.uc3m.baldo.opinais.ir.preprocessors.PreProcessor;
 
+/**
+ * OpinaisProperties.
+ * <p>Stores the properties read from an external file,
+ * which are required by the AIS.</p>
+ * 
+ * @author Alejandro Baldominos
+ */
 public class OpinaisProperties {
 	
+	/**
+	 * <p>The number of features of each individual.</p>
+	 */
 	public int featuresLength;
+	
+	/**
+	 * <p>The size of the detectors population.</p>
+	 */
 	public int speciesSize;
+	
+	/**
+	 * <p>The maximum number of individuals.</p>
+	 * <p>The individuals are selected randomly from
+	 * a set containing all the input individuals.</p>
+	 * <p>0 means that all the individuals are considered.</p>
+	 */
 	public int individualsSize;
+	
+	/**
+	 * <p>The probability that a randomly created detector
+	 * detects self individuals.</p>
+	 */
 	public double typeBias;
+	
+	/**
+	 * <p>The probability that a bit in a randomly created
+	 * detector is a wildcard.</p>
+	 */
 	public double generalityBias;
+	
+	/**
+	 * <p>The probability that crossover is performed over
+	 * two parent detectors to obtain a child.</p>
+	 */
 	public double crossoverRate;
+	
+	/**
+	 * <p>The probability that mutation is performed in a bit
+	 * in the detector schema.</p>
+	 */
 	public double mutationRate;
+	
+	/**
+	 * <p>The maximum number of generations of the evolutionary
+	 * algorithm.</p>
+	 */
 	public int maxGenerations;
+	
+	/**
+	 * <p>Required umber of consecutive generations where the fitness 
+	 * is not increased in order to stop.</p>
+	 * TODO This parameter is ignored so far.
+	 */
 	public int stagnationGenerations;
+	
+	/**
+	 * <p>The input file containing all the individuals.</p>
+	 */
 	public String inputFile;
+	
+	/**
+	 * <p>The percentage of individuals to be stored in the test set.</p>
+	 * <p>This value must be expressed as a fraction.</p>
+	 */
 	public double testPct;
+	
+	/**
+	 * <p>Sorted list of pre-processors to be executed over the
+	 * individuals.</p>
+	 */
 	public List<PreProcessor<String>> preprocessors;
 	
 	public OpinaisProperties () {
@@ -27,7 +93,7 @@ public class OpinaisProperties {
 	}
 	
 	/**
-	 * Reads the properties from a file and stores them.
+	 * <p>Reads the properties from a file and stores them.</p>
 	 * @param propertiesFile the path for the properties file.
 	 */
 	@SuppressWarnings("unchecked")

@@ -1,6 +1,6 @@
 package es.uc3m.baldo.opinais;
 
-import java.io.File;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -11,11 +11,8 @@ import es.uc3m.baldo.opinais.core.algorithms.CoEvolutionaryAlgorithm;
 import es.uc3m.baldo.opinais.core.algorithms.EvolutionaryAlgorithm;
 import es.uc3m.baldo.opinais.core.detectors.Detector;
 import es.uc3m.baldo.opinais.experimenter.Experimenter;
-import es.uc3m.baldo.opinais.ir.TextIndividualsFactory;
-import es.uc3m.baldo.opinais.ir.items.Tweet;
-import es.uc3m.baldo.opinais.ir.readers.TweetReader;
 
-public class Test {
+public class Test2 {
 
 	/**
 	 * @param args
@@ -24,9 +21,28 @@ public class Test {
 		System.out.println("Loading configuration...");
 		OpinaisProperties props = OpinaisProperties.readProperties("opinais.properties");
 
-		TextIndividualsFactory<Tweet> factory = new TextIndividualsFactory<>();
-		Set<Individual> individuals = factory.makeIndividuals(new File(props.inputFile), new TweetReader(), 
-															  props.preprocessors, props.featuresLength, props.individualsSize);
+		Set<Individual> individuals = new HashSet<Individual>();
+		individuals.add(new Individual(Type.SELF,0,0,1,0,0,1,1,1,0,1));
+		individuals.add(new Individual(Type.SELF,1,0,0,1,1,0,0,1,1,0));
+		individuals.add(new Individual(Type.SELF,0,0,1,0,0,1,1,1,0,1));
+		individuals.add(new Individual(Type.SELF,1,0,0,1,1,0,0,1,1,0));
+		individuals.add(new Individual(Type.SELF,0,0,1,0,0,1,1,1,0,1));
+		individuals.add(new Individual(Type.SELF,1,0,0,1,1,0,0,1,1,0));
+		individuals.add(new Individual(Type.SELF,0,0,1,0,0,1,1,1,0,1));
+		individuals.add(new Individual(Type.SELF,1,0,0,1,1,0,0,1,1,0));
+		individuals.add(new Individual(Type.SELF,0,0,1,0,0,1,1,1,0,1));
+		individuals.add(new Individual(Type.SELF,1,0,0,1,1,0,0,1,1,0));
+		
+		individuals.add(new Individual(Type.NON_SELF,1,1,1,0,0,0,1,1,1,0));
+		individuals.add(new Individual(Type.NON_SELF,1,1,0,0,1,1,0,0,0,1));
+		individuals.add(new Individual(Type.NON_SELF,1,1,1,0,0,0,1,0,1,0));
+		individuals.add(new Individual(Type.NON_SELF,1,1,0,0,1,1,0,0,0,1));
+		individuals.add(new Individual(Type.NON_SELF,1,1,1,0,0,0,1,1,1,0));
+		individuals.add(new Individual(Type.NON_SELF,1,1,0,0,1,1,0,0,0,1));
+		individuals.add(new Individual(Type.NON_SELF,1,1,1,0,0,0,1,1,1,0));
+		individuals.add(new Individual(Type.NON_SELF,1,1,0,0,1,1,0,0,0,1));
+		individuals.add(new Individual(Type.NON_SELF,1,1,1,0,0,0,1,1,1,0));
+		individuals.add(new Individual(Type.NON_SELF,1,1,0,0,1,1,0,0,0,1));
 		
 		System.out.println("Generating the training and test sets...");
 		Experimenter experimenter = new Experimenter(individuals, props.testPct);
