@@ -1,8 +1,8 @@
 package es.uc3m.baldo.opinais.core.operators;
 
 import es.uc3m.baldo.opinais.core.Bit;
-import es.uc3m.baldo.opinais.core.Type;
 import es.uc3m.baldo.opinais.core.detectors.Detector;
+import es.uc3m.baldo.opinais.core.types.Type;
 
 /**
  * Mutation

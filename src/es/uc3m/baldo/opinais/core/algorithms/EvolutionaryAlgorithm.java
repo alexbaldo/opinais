@@ -8,10 +8,10 @@ import java.util.Map;
 import java.util.Set;
 
 import es.uc3m.baldo.opinais.core.Individual;
-import es.uc3m.baldo.opinais.core.Type;
 import es.uc3m.baldo.opinais.core.detectors.Detector;
 import es.uc3m.baldo.opinais.core.operators.CrossoverOperator;
 import es.uc3m.baldo.opinais.core.operators.MutationOperator;
+import es.uc3m.baldo.opinais.core.types.Type;
 import es.uc3m.baldo.opinais.selectors.RouletteSelector;
 import es.uc3m.baldo.opinais.selectors.Selector;
 
@@ -24,7 +24,6 @@ import es.uc3m.baldo.opinais.selectors.Selector;
  * <p>A roulette selector method is used to select individuals. Uniform
  * crossover and bit mutation is implemented to reproduce and mutate
  * detectors.</p>
- * TODO The algorithm only works for two types (self and non-self).
  * 
  * @author Alejandro Baldominos
  */
@@ -82,9 +81,11 @@ public class EvolutionaryAlgorithm extends AbstractAlgorithm {
 		// Creates the initial population.
 		initializePopulation();
 		
-		// Splits the initial population in two lists.
-		List<Detector> selfDetectors = filterDetectors(detectors, Type.SELF);
-		List<Detector> nonSelfDetectors = filterDetectors(detectors, Type.NON_SELF);
+		// Splits the initial population in lists for each type.
+		Map<Type, List<Detector>> detectors = new HashMap<Type, List<Detector>>();
+		for (Type type : Type.values()) {
+			detectors.put(type, filterDetectors(this.detectors, type));
+		}
 
 		// Initializes the evolutionary operators.
 		RouletteSelector roulette = null;
@@ -94,62 +95,54 @@ public class EvolutionaryAlgorithm extends AbstractAlgorithm {
 		int generation = 0;
 		// The algorithm runs while the stop condition is not met.
 		while (!stop(generation)) {
-			// Calculates the fitness for each detector and
-			// sorts the lists by descending fitness.
-			for (Detector detector : selfDetectors) {
-				detector.setFitness(fitness(detector));
+			// Calculates the fitness for each detector and sorts the lists by 
+			// descending fitness.
+			for (Type type : Type.values()) {
+				for (Detector detector : detectors.get(type)) {
+					detector.setFitness(fitness(detector));
+				}
+				Collections.sort(detectors.get(type));
 			}
-			Collections.sort(selfDetectors);
-			for (Detector detector : nonSelfDetectors) {
-				detector.setFitness(fitness(detector));
-			}
-			Collections.sort(nonSelfDetectors);
 			
 			// Generates the new populations.
-			List<Detector> newSelfDetectors = new LinkedList<Detector>();
-			List<Detector> newNonSelfDetectors = new LinkedList<Detector>();
-			roulette = new RouletteSelector(selfDetectors);
-			while (newSelfDetectors.size() < selfDetectors.size()) {
-				newSelfDetectors.add(generateChildDetector(roulette, crossover, mutation));
+			for (Type type : Type.values()) {
+				List<Detector> newDetectors = new LinkedList<Detector>();
+				roulette = new RouletteSelector(detectors.get(type));
+				while (newDetectors.size() < detectors.get(type).size()) {
+					newDetectors.add(generateChildDetector(roulette, crossover, mutation));
+				}
+				
+				// Replaces the generations.
+				detectors.put(type, newDetectors);
 			}
-			roulette = new RouletteSelector(nonSelfDetectors);
-			while (newNonSelfDetectors.size() < nonSelfDetectors.size()) {
-				newNonSelfDetectors.add(generateChildDetector(roulette, crossover, mutation));
-			}
-			
+
 			if (generation % (maxGenerations / 100) == 0) {
 				System.out.println("\t" + generation / (maxGenerations / 100) + "% completed.");
 			}
-			
-			// Replaces the generations.
-			selfDetectors = newSelfDetectors;
-			nonSelfDetectors = newNonSelfDetectors;
 			
 			// Increases the generations counter.
 			generation++;
 		}
 		
 		
-		// Calculates the fitness for each detector and
-		// sorts the lists by descending fitness.
-		for (Detector detector : selfDetectors) {
-			detector.setFitness(fitness(detector));
+		// Calculates the fitness for each detector and sorts the lists by 
+		// descending fitness.
+		for (Type type : Type.values()) {
+			for (Detector detector : detectors.get(type)) {
+				detector.setFitness(fitness(detector));
+			}
+			Collections.sort(detectors.get(type));
 		}
-		Collections.sort(selfDetectors);
-		for (Detector detector : nonSelfDetectors) {
-			detector.setFitness(fitness(detector));
-		}
-		Collections.sort(nonSelfDetectors);
-		
-		// Prints the ultimate detectors.
-		System.out.println("\t" + selfDetectors.get(0));
-		System.out.println("\t" + nonSelfDetectors.get(0));
 		
 		// Creates the map with the best detectors.
 		Map<Type, Detector> bestDetectors = new HashMap<Type, Detector>();
-		bestDetectors.put(Type.SELF, selfDetectors.get(0));
-		bestDetectors.put(Type.NON_SELF, nonSelfDetectors.get(0));
-		
+		for (Type type : Type.values()) {
+			bestDetectors.put(type, detectors.get(type).get(0));
+			
+			// Prints the ultimate detectors.		
+			System.out.println("\t" + detectors.get(type).get(0));
+		}
+
 		return bestDetectors;
 	}
 	
@@ -166,7 +159,7 @@ public class EvolutionaryAlgorithm extends AbstractAlgorithm {
 		// Selects two parent detectors.
 		Detector parent1 = selector.selectDetector();
 		Detector parent2 = selector.selectDetector();
-		
+
 		// Generates a new child detector using crossover.
 		Detector child = crossover.crossover(parent1, parent2);
 		
@@ -189,26 +182,20 @@ public class EvolutionaryAlgorithm extends AbstractAlgorithm {
 	 * @return the detector fitness in the range [0,1].
 	 */
 	protected double fitness (Detector detector) {
-		// Stores the true matches.
-		int matches = 0;
-		
-		// Stores the false positives.
-		int mistakes = 0;
-		
+		// Stores the fitness.
+		double fitness = 0.0;
+
 		// Checks the matching for each individual.
 		for (Individual individual : individuals) {
 			double matchingPct = detector.match(individual);
-			if (matchingPct > detector.decodedThreshold) {
-				if (detector.type == individual.type) {
-					matches++;
-				} else {
-					mistakes++;
-				}
+			if (matchingPct >= detector.decodedThreshold) {
+				fitness += detector.type == individual.type? 1 : -1;
+			} else {
+				fitness += detector.type == individual.type? -1 : 1;
 			}
 		}
-		
-		// Fitness is calculated and normalized to obtain a number in the range [0,1].
-		double fitness = matches - mistakes;
+
+		// Fitness is normalized to obtain a number in the range [0,1].
 		fitness = (fitness + individuals.size()) / (2 * individuals.size());
 		
 		return fitness;

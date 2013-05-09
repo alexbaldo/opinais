@@ -8,8 +8,8 @@ import java.util.Map;
 import java.util.Set;
 
 import es.uc3m.baldo.opinais.core.Individual;
-import es.uc3m.baldo.opinais.core.Type;
 import es.uc3m.baldo.opinais.core.detectors.Detector;
+import es.uc3m.baldo.opinais.core.types.Type;
 
 /**
  * Experimenter.
@@ -60,11 +60,11 @@ public class Experimenter {
 		for (int i = 0; i < testIndividuals; i++) {
 			testSet.add(allIndividuals.get(i));
 		}
-		
+
 		// The training individuals are chosen.
 		for (int i = testIndividuals; i < allIndividuals.size(); i++) {
 			trainingSet.add(allIndividuals.get(i));
-		}		
+		}
 	}
 	
 	/**

@@ -6,10 +6,10 @@ import java.util.Set;
 
 import es.uc3m.baldo.opinais.core.Individual;
 import es.uc3m.baldo.opinais.core.OpinaisProperties;
-import es.uc3m.baldo.opinais.core.Type;
 import es.uc3m.baldo.opinais.core.algorithms.CoEvolutionaryAlgorithm;
 import es.uc3m.baldo.opinais.core.algorithms.EvolutionaryAlgorithm;
 import es.uc3m.baldo.opinais.core.detectors.Detector;
+import es.uc3m.baldo.opinais.core.types.Type;
 import es.uc3m.baldo.opinais.experimenter.Experimenter;
 import es.uc3m.baldo.opinais.ir.TextIndividualsFactory;
 import es.uc3m.baldo.opinais.ir.items.Tweet;

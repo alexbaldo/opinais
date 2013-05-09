@@ -1,7 +1,7 @@
 package es.uc3m.baldo.opinais.core.detectors;
 
 import es.uc3m.baldo.opinais.core.Bit;
-import es.uc3m.baldo.opinais.core.Type;
+import es.uc3m.baldo.opinais.core.types.Type;
 
 /**
  * DetectorFactory.
@@ -26,7 +26,8 @@ public class DetectorFactory {
 	 */
 	public static Detector makeDetector (int length, double typeBias, double generalityBias) {
 		// Extracts the detector type.
-		Type type = Math.random() < typeBias? Type.SELF : Type.NON_SELF;
+		int random = (int) (Math.random() * Type.values().length);
+		Type type = Type.values()[random];
 		
 		// Generates the threshold, represented
 		// as an 8-bit string in Gray encoding.

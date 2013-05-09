@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Properties;
 
+import es.uc3m.baldo.opinais.core.types.TypeBuilder;
 import es.uc3m.baldo.opinais.ir.preprocessors.PreProcessor;
 
 /**
@@ -102,6 +103,13 @@ public class OpinaisProperties {
 		Properties properties = new Properties();
 		try {
 			properties.load(new FileReader(propertiesFile));
+			
+			// Dynamically adds the set of types.
+			String[] types = properties.getProperty("types").split(",");
+			for (String type : types) {
+				TypeBuilder.addType(type);
+			}
+			
 			opinaisProps.featuresLength = Integer.parseInt(properties.getProperty("featuresLength"));			
 			opinaisProps.speciesSize = Integer.parseInt(properties.getProperty("speciesSize"));	
 			opinaisProps.individualsSize = Integer.parseInt(properties.getProperty("individualsSize"));	

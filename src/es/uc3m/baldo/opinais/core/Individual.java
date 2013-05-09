@@ -2,6 +2,8 @@ package es.uc3m.baldo.opinais.core;
 
 import java.util.Arrays;
 
+import es.uc3m.baldo.opinais.core.types.Type;
+
 /**
  * Individual.
  * <p>Represents an individual in the Artificial Immune
@@ -54,26 +56,15 @@ public class Individual {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Individual other = (Individual) obj;
-		if (!Arrays.equals(bits, other.bits))
-			return false;
-		if (type != other.type)
-			return false;
-		return true;
+	public boolean equals (Object obj) {
+		return this == obj;
 	}
 	
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public int hashCode() {
+	public int hashCode () {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + Arrays.hashCode(bits);
@@ -85,7 +76,7 @@ public class Individual {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public String toString() {
+	public String toString () {
 		return "Individual [type=" + type + ", bits=" + Arrays.toString(bits)
 				+ "]";
 	}

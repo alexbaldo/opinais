@@ -2,7 +2,7 @@ package es.uc3m.baldo.opinais.ir.readers.factories;
 
 import java.util.regex.Pattern;
 
-import es.uc3m.baldo.opinais.core.Type;
+import es.uc3m.baldo.opinais.core.types.Type;
 import es.uc3m.baldo.opinais.ir.items.Tweet;
 
 /**
@@ -39,12 +39,7 @@ public class TweetFactory implements TextItemFactory<Tweet, String> {
 		String[] tokens = SEPARATOR.split(line);
 		
 		// Extracts the tweet type.
-		Type type = null;
-		if (tokens[0].equals("+")) {
-			type = Type.SELF;
-		} else if (tokens[0].equals("-")) {
-			type = Type.NON_SELF;
-		}
+		Type type = Type.valueOf(tokens[0]);
 		
 		// Extracts the tweet id.
 		int id = Integer.parseInt(tokens[1]);

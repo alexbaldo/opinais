@@ -4,7 +4,7 @@ import java.util.Arrays;
 
 import es.uc3m.baldo.opinais.core.Bit;
 import es.uc3m.baldo.opinais.core.Individual;
-import es.uc3m.baldo.opinais.core.Type;
+import es.uc3m.baldo.opinais.core.types.Type;
 
 /**
  * Detector.
@@ -60,6 +60,10 @@ public class Detector implements Comparable<Detector>, Cloneable {
 		this.mask = mask;
 	}
 		
+	public void setDecodedThreshold (double thr) {
+		this.decodedThreshold = thr;
+	}
+	
 	/**
 	 * <p>Checks whether the detector actually detects the individual.</p>
 	 * <p>This will happen when the percentage of bit matches (ignoring

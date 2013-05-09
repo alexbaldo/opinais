@@ -7,7 +7,7 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.regex.Pattern;
 
-import es.uc3m.baldo.opinais.core.Type;
+import es.uc3m.baldo.opinais.core.types.Type;
 import es.uc3m.baldo.opinais.ir.items.TextItem;
 
 /**

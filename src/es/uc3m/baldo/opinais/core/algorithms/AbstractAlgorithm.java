@@ -6,9 +6,9 @@ import java.util.Map;
 import java.util.Set;
 
 import es.uc3m.baldo.opinais.core.Individual;
-import es.uc3m.baldo.opinais.core.Type;
 import es.uc3m.baldo.opinais.core.detectors.Detector;
 import es.uc3m.baldo.opinais.core.detectors.DetectorFactory;
+import es.uc3m.baldo.opinais.core.types.Type;
 
 /**
  * <p>Provides an abstract implementation of an algorithm.</p>

@@ -1,8 +1,8 @@
 package es.uc3m.baldo.opinais.core.operators;
 
 import es.uc3m.baldo.opinais.core.Bit;
-import es.uc3m.baldo.opinais.core.Type;
 import es.uc3m.baldo.opinais.core.detectors.Detector;
+import es.uc3m.baldo.opinais.core.types.Type;
 
 /**
  * CrossoverOperator
@@ -38,7 +38,6 @@ public class CrossoverOperator {
 	 * @return the child detector.
 	 */
 	public Detector crossover (Detector detector1, Detector detector2) {
-		
 		// Checks whether crossover is actually performed.
 		// If crossover were not performed, then one of the
 		// parents were randomly returned.

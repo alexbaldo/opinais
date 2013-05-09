@@ -2,8 +2,8 @@ package es.uc3m.baldo.opinais.core.algorithms;
 
 import java.util.Map;
 
-import es.uc3m.baldo.opinais.core.Type;
 import es.uc3m.baldo.opinais.core.detectors.Detector;
+import es.uc3m.baldo.opinais.core.types.Type;
 
 /**
  * Algorithm.

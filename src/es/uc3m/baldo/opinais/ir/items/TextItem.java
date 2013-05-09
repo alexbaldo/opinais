@@ -1,6 +1,6 @@
 package es.uc3m.baldo.opinais.ir.items;
 
-import es.uc3m.baldo.opinais.core.Type;
+import es.uc3m.baldo.opinais.core.types.Type;
 
 /**
  * TextItem.
