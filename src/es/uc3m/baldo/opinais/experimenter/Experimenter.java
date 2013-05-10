@@ -1,11 +1,14 @@
 package es.uc3m.baldo.opinais.experimenter;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import org.apache.commons.lang3.StringUtils;
 
 import es.uc3m.baldo.opinais.core.Individual;
 import es.uc3m.baldo.opinais.core.detectors.Detector;
@@ -84,28 +87,96 @@ public class Experimenter {
 	}
 	
 	/**
-	 * <p>Calculates the hit rate of the best detectors for each type for a set
-	 * of individuals.</p>
+	 * <p>Retrieves the confusion matrix for the inference provided by the best
+	 * detectors over each type of individual.</p>
 	 * @param bestDetectors the best detector for each possible type.
 	 * @param individuals the set of individuals.
 	 * @return the hit ratio.
 	 */
-	public double calculateHitRate (Map<Type, Detector> bestDetectors, Set<Individual> individuals) {
-		// Stores the number of hits.
-		double hits = 0;
-		
-		// Iterates through every individual.
-		for (Individual individual : individuals) {
-			// If the inferred type equals the real type of the individual,
-			// then a hit is counted.
-			if (inferType(bestDetectors, individual) == individual.type) {
-				hits++;
+	public Map<Type,Map<Type, Integer>> getConfusionMatrix (Map<Type, Detector> bestDetectors, Set<Individual> individuals) {
+		// Initializes the confusion matrix.
+		Map<Type,Map<Type, Integer>> matrix = new HashMap<Type, Map<Type, Integer>>();
+		for (Type realType : Type.values()) {
+			matrix.put(realType, new HashMap<Type, Integer>());
+			// Stores the unclassified instances.
+			matrix.get(realType).put(null, 0);
+			for (Type inferredType : Type.values()) {
+				matrix.get(realType).put(inferredType, 0);
 			}
 		}
+
+		// Iterates through every individual.
+		for (Individual individual : individuals) {
+			// Infers the type.
+			Type inferredType = inferType(bestDetectors, individual);
+
+			// Increases the counter for the Real-Inferred matrix.
+			Map<Type, Integer> row = matrix.get(individual.type);
+			row.put(inferredType, row.get(inferredType) + 1);
+		}
 		
+		return matrix;
+	}
+	
+	/**
+	 * <p>Prints the confusion manner in a readable way.</p>
+	 * @param confusionMatrix the confusion matrix to be printed.
+	 */
+	public void printConfusionMatrix (Map<Type,Map<Type, Integer>> confusionMatrix) {
+		// Retrieves the maximum type name size.
+		int maxSize = 0;
+		for (Type type : Type.values()) {
+			maxSize = Math.max(maxSize, type.name().length());
+		}
+		
+		// Prints the header.
+		System.out.print("\t" + StringUtils.repeat(' ', maxSize) + "\t");
+		for (Type type : Type.values()) {
+			System.out.print(type + "\t");
+		}
+		System.out.println("Unclassified" + " | <- classified as");
+		System.out.print("\t" + StringUtils.repeat(' ', maxSize) + "\t");
+		for (Type type : Type.values()) {
+			System.out.print(StringUtils.repeat('-', type.name().length()) + "\t");
+		}
+		System.out.println(StringUtils.repeat('-', "Unclassified".length()));
+		
+		// Prints the matrix.
+		for (Type realType : Type.values()) {
+			System.out.print("\t" + realType.name() + StringUtils.repeat(' ', maxSize - realType.name().length()) + "\t");
+			for (Type inferredType : Type.values()) {
+				String value = String.valueOf(confusionMatrix.get(realType).get(inferredType));
+				System.out.print(value + StringUtils.repeat(' ', inferredType.name().length() - value.length()) + "\t");
+			}
+			String value = String.valueOf(confusionMatrix.get(realType).get(null));
+			System.out.println(value);			
+		}
+	}
+	
+	/**
+	 * <p>Calculates the hit rate of the best detectors for each type for a set
+	 * of individuals.</p>
+	 * @param confusionMatrix the confusion matrix.
+	 * @return the hit ratio.
+	 */
+	public double calculateHitRate (Map<Type,Map<Type, Integer>> confusionMatrix) {
+		// Stores the number of hits.
+		int hits = 0;
+		
+		// Stores the total number of individuals.
+		int individuals = 0;
+		
+		// Iterates through the confusion matrix.
+		for (Type realType : Type.values()) {
+			hits += confusionMatrix.get(realType).get(realType);
+			for (Type inferredType : Type.values()) {
+					individuals += confusionMatrix.get(realType).get(inferredType);
+			}
+		}
+
 		// The hit rate is calculated as the ratio between the total number
 		// of hits and the number of individuals.
-		return hits / individuals.size();
+		return (double) hits / individuals;
 	}
 	
 	/**

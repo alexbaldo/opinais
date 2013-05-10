@@ -18,6 +18,9 @@ import sun.reflect.ReflectionFactory;
  * Type enumerated.</p>
  * <p>This class uses the power of reflection to alter
  * the enum fields in runtime, in a somehow magical way.</p>
+ * <p>TODO: While this implementation is somehow curious, it
+ * is quite dangerous as it depends on low-level details of
+ * the compiler, so it may be replaced in the future.</p>
  * 
  * @author Alejandro Baldominos
  */
@@ -90,7 +93,7 @@ public class TypeBuilder {
     }
     
     /**
-     * <p>Alters a field in a class, in a failsafe way.</p> 
+     * <p>Alters a field in a class, in a fail-safe way.</p> 
      * @param field the field whose value is going to
      * be modified.
      * @param value the new value for the field.

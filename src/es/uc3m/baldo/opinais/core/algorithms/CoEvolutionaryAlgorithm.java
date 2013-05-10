@@ -35,7 +35,6 @@ public class CoEvolutionaryAlgorithm extends EvolutionaryAlgorithm {
 		
 	/**
 	 * <p>Builds a new co-evolutionary algorithm.</p>
-	 * @param featuresLength the number of features of each individual.
 	 * @param speciesSize the size of the detectors population.
 	 * @param typeBias the probability that a randomly created detector
 	 * detects self individuals.
@@ -47,13 +46,12 @@ public class CoEvolutionaryAlgorithm extends EvolutionaryAlgorithm {
 	 * in a bit in the detector schema.
 	 * @param maxGenerations the maximum number of generations of the 
 	 * algorithm.
-	 * @param individuals set containing the individuals.
 	 */
-	public CoEvolutionaryAlgorithm (int featuresLength, int speciesSize, double typeBias, double generalityBias, 
+	public CoEvolutionaryAlgorithm (int speciesSize, double typeBias, double generalityBias, 
 								    double crossoverRate, double mutationRate, int maxGenerations, 
 								    Set<Individual> individuals) {
-		super(featuresLength, speciesSize, typeBias, generalityBias, crossoverRate, mutationRate, 
-			  maxGenerations, individuals);
+		super(speciesSize, typeBias, generalityBias, crossoverRate, mutationRate, 
+			  maxGenerations);
 		this.crossoverRate = crossoverRate;
 		this.mutationRate = mutationRate;
 	}

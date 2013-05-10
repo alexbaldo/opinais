@@ -1,0 +1,16 @@
+es.uc3m.baldo.opinais
+es.uc3m.baldo.opinais.adt
+es.uc3m.baldo.opinais.core
+es.uc3m.baldo.opinais.core.algorithms
+es.uc3m.baldo.opinais.core.detectors
+es.uc3m.baldo.opinais.core.operators
+es.uc3m.baldo.opinais.core.types
+es.uc3m.baldo.opinais.experimenter
+es.uc3m.baldo.opinais.ir
+es.uc3m.baldo.opinais.ir.extractors
+es.uc3m.baldo.opinais.ir.items
+es.uc3m.baldo.opinais.ir.preprocessors
+es.uc3m.baldo.opinais.ir.readers
+es.uc3m.baldo.opinais.ir.readers.factories
+es.uc3m.baldo.opinais.ir.vectorizers
+es.uc3m.baldo.opinais.selectors

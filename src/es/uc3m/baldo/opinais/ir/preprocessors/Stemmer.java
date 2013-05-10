@@ -19,7 +19,7 @@ public class Stemmer implements PreProcessor<String> {
 
 	/**
 	 * <p>Reduces each word in an input text to its stem.</p>
-	 * @param item the input string.
+	 * @param text the input string.
 	 * @return the string after stemming is performed on each word.
 	 */
 	@Override

@@ -2,13 +2,16 @@ package es.uc3m.baldo.opinais.ir;
 
 import java.io.File;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import es.uc3m.baldo.opinais.core.Bit;
 import es.uc3m.baldo.opinais.core.Individual;
+import es.uc3m.baldo.opinais.core.types.Type;
 import es.uc3m.baldo.opinais.ir.extractors.TextFeaturesExtractor;
 import es.uc3m.baldo.opinais.ir.items.TextItem;
 import es.uc3m.baldo.opinais.ir.preprocessors.PreProcessor;
@@ -23,22 +26,14 @@ import es.uc3m.baldo.opinais.ir.vectorizers.TextVectorizer;
  * 
  * @author Alejandro Baldominos
  */
-public class TextIndividualsFactory<T extends TextItem> {
+public class TextIndividualsFactory<T extends TextItem> implements IndividualsFactory<T> {
 	
 	/**
-	 * <p>Generates a set of text individuals from a source file.</p>
-	 * @param inputFile the source file containing the items.
-	 * @param reader a reader object which provides the logic to
-	 * retrieve items from the input file.
-	 * @param preprocessors a list of pre-processors to be executed
-	 * over the items.
-	 * @param nFeatures the number of features to be extracted.
-	 * @param nIndividuals the number of individuals to be generated,
-	 * where 0 means that all individuals are actually chosen.
-	 * @return the set of generated individuals.
+	 * {@inheritDoc}
 	 */
+	@Override
 	public Set<Individual> makeIndividuals (File inputFile, Reader<T> reader, 
-											List<PreProcessor<String>> preprocessors, int nFeatures, int nIndividuals) {
+											List<PreProcessor<String>> preprocessors, int nFeatures, int nIndividuals, boolean isBalanced) {
 		
 		System.out.println("Reading the input file...");
 		// Reads the input file and retrieves a set of items.
@@ -46,7 +41,7 @@ public class TextIndividualsFactory<T extends TextItem> {
 				
 		// Selects a subset of random individuals
 		// (only if the property is specified).
-		if (nIndividuals > 0 && nIndividuals < items.size()) {
+		if (nIndividuals > 0 && nIndividuals < items.size()) {			
 			System.out.println("Selecting random items...");
 			
 			// Represents the set of items as a list.
@@ -55,10 +50,42 @@ public class TextIndividualsFactory<T extends TextItem> {
 			// Randomizes the list of items.
 			Collections.shuffle(itemsList);
 			
-			// Selects n random items.
+			// Stores the set of items.
 			items = new HashSet<>();
-			for (int i = 0; i < nIndividuals; i++) {
-				items.add(itemsList.get(i));
+			
+			// If individuals need not to be balanced, the
+			// selects n random items.
+			if (!isBalanced) {
+				for (int i = 0; i < nIndividuals; i++) {
+					items.add(itemsList.get(i));
+				}
+				
+			// If individuals need to be balanced, then it
+			// stores the number of individuals for each
+			// class.
+			}  else {
+				int remaining = nIndividuals > 0 ? Math.min(nIndividuals, itemsList.size()) : itemsList.size();
+				Map<Type, Integer> remainingType = new HashMap<>();
+				for (Type type : Type.values()) {
+					remainingType.put(type, remaining / Type.values().length);
+				}
+				
+				for (T item : itemsList) {
+					Type type = item.getType();
+					
+					// This item is only stored is there is room for more items of this type.
+					if (remainingType.get(type) > 0) {
+						items.add(item);
+						remainingType.put(type, remainingType.get(type) - 1);
+						remaining--;
+					}
+					
+					// When all individuals are added, it stops.
+					// Avoids stupid calculations.
+					if (remaining == 0) {
+						break;
+					}
+				}
 			}
 		}
 		
@@ -87,5 +114,4 @@ public class TextIndividualsFactory<T extends TextItem> {
 		
 		return individuals;
 	}
-
 }

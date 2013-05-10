@@ -101,7 +101,7 @@ public class StopWordsRemover implements PreProcessor<String> {
 	/**
 	 * <p>Removes words from an input string if those are contained
 	 * in a stop-words set.</p>
-	 * @param item the input string.
+	 * @param text the input string.
 	 * @return the string after all stop-words are removed.
 	 */
 	@Override

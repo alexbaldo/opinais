@@ -17,7 +17,7 @@ public interface FeaturesExtractor<T, E> {
 	/**
 	 * <p>Extracts the features from a set of items and returns them
 	 * in an array, as ordering is important for a further vectorization.</p>
-	 * @param the set of items needed to extract the features.
+	 * @param items the set of items needed to extract the features.
 	 * @return a sorted array with the features.
 	 */
 	public T[] extractFeatures (Set<? extends E> items);

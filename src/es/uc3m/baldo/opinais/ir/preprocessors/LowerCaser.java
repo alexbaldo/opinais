@@ -12,7 +12,7 @@ public class LowerCaser implements PreProcessor<String> {
 
 	/**
 	 * <p>Converts all characters from a text string to lower case.</p>
-	 * @param item the input string.
+	 * @param text the input string.
 	 * @return the string with all characters lower-cased.
 	 */
 	@Override

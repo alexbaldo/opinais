@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import es.uc3m.baldo.opinais.core.Individual;
 import es.uc3m.baldo.opinais.core.detectors.Detector;
@@ -40,10 +39,9 @@ public class EvolutionaryAlgorithm extends AbstractAlgorithm {
 	 * in the detector schema.</p>
 	 */
 	protected double mutationRate;
-	
+		
 	/**
 	 * <p>Builds a new evolutionary algorithm.</p>
-	 * @param featuresLength the number of features of each individual.
 	 * @param speciesSize the size of the detectors population.
 	 * @param typeBias the probability that a randomly created detector
 	 * detects self individuals.
@@ -55,12 +53,10 @@ public class EvolutionaryAlgorithm extends AbstractAlgorithm {
 	 * in a bit in the detector schema.
 	 * @param maxGenerations the maximum number of generations of the 
 	 * algorithm.
-	 * @param individuals set containing the individuals.
 	 */
-	public EvolutionaryAlgorithm (int featuresLength, int speciesSize, double typeBias, double generalityBias, 
-								  double crossoverRate, double mutationRate, int maxGenerations, 
-								  Set<Individual> individuals) {
-		super(featuresLength, speciesSize, typeBias, generalityBias, maxGenerations, individuals);
+	public EvolutionaryAlgorithm (int speciesSize, double typeBias, double generalityBias, 
+								  double crossoverRate, double mutationRate, int maxGenerations) {
+		super(speciesSize, typeBias, generalityBias, maxGenerations);
 		this.crossoverRate = crossoverRate;
 		this.mutationRate = mutationRate;
 	}

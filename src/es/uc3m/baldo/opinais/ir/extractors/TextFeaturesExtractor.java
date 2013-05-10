@@ -53,7 +53,7 @@ public class TextFeaturesExtractor implements FeaturesExtractor<String, TextItem
 	 * <p>In summary, it calculates the information gain for each word
 	 * in the text, selecting as features the <em>n</em> words with a higher value
 	 * for this metric.</p>
-	 * @param the set of items needed to extract the features.
+	 * @param items the set of items needed to extract the features.
 	 * @return a sorted array of string containing the features (words).
 	 */
 	@Override
@@ -183,7 +183,7 @@ public class TextFeaturesExtractor implements FeaturesExtractor<String, TextItem
 	 * <em>t</em>.</p>
 	 * @param word the specific word to calculate the information gain.
 	 * @param occurrences a map containing the number of items per each type.
-	 * @param wordsOccurrences a map containing the number of occurrences of each
+	 * @param wordsOccurrencesByType a map containing the number of occurrences of each
 	 * word per each type.
 	 * @param appears determines whether to calculate the information gain over the
 	 * appearance set (true) or the non-appearance set (false).

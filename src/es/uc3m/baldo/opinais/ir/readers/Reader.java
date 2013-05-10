@@ -7,7 +7,7 @@ import java.util.Set;
  * Reader.
  * <p>All readers must implement this interface.</p>
  * 
- * @T type of object.
+ * @param <T> type of object.
  * 
  * @author Alejandro Baldominos
  */

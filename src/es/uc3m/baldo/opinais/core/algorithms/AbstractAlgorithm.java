@@ -63,7 +63,6 @@ public abstract class AbstractAlgorithm implements Algorithm {
 	
 	/**
 	 * <p>Initializes some fields common to most algorithms.</p>
-	 * @param featuresLength the number of features of each individual.
 	 * @param speciesSize the size of the detectors population.
 	 * @param typeBias the probability that a randomly created detector
 	 * detects self individuals.
@@ -71,17 +70,30 @@ public abstract class AbstractAlgorithm implements Algorithm {
 	 * created detector is a wildcard.
 	 * @param maxGenerations the maximum number of generations of the 
 	 * algorithm.
-	 * @param individuals set containing the individuals.
 	 */
-	public AbstractAlgorithm (int featuresLength, int speciesSize, double typeBias, double generalityBias, 
-						 	  int maxGenerations, Set<Individual> individuals) {
-		this.featuresLength = featuresLength;
+	public AbstractAlgorithm (int speciesSize, double typeBias, double generalityBias, 
+						 	  int maxGenerations) {
 		this.speciesSize = speciesSize;
 		this.typeBias = typeBias;
 		this.generalityBias = generalityBias;
 		this.maxGenerations = maxGenerations;
 		this.detectors = new ArrayList<Detector>(speciesSize);
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 * <p>Automatically retrieves the number of features of the
+	 * individuals.</p>
+	 */
+	@Override
+	public void setIndividuals (Set<Individual> individuals) {
 		this.individuals = individuals;
+		
+		// Extracts the number of features from the individual.
+		for (Individual individual : individuals) {
+			this.featuresLength = individual.bits.length;
+			break;
+		}
 	}
 	
 	/**
