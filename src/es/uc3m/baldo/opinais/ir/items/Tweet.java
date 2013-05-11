@@ -5,7 +5,7 @@ import es.uc3m.baldo.opinais.core.types.Type;
 /**
  * Tweet.
  * <p>A particular type of a {@link TextItem}, representing 
- * a Tweet (a publication in the microblogging network Twitter</p>
+ * a Tweet (a publication in the microblogging network Twitter.</p>
  * 
  * @author Alejandro Baldominos
  */

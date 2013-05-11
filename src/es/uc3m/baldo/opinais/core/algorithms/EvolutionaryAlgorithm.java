@@ -39,6 +39,12 @@ public class EvolutionaryAlgorithm extends AbstractAlgorithm {
 	 * in the detector schema.</p>
 	 */
 	protected double mutationRate;
+	
+	/**
+	 * <p>Percentage of the best individuals to be maintained across
+	 * generations.</p>
+	 */
+	protected double elitism;
 		
 	/**
 	 * <p>Builds a new evolutionary algorithm.</p>
@@ -51,14 +57,17 @@ public class EvolutionaryAlgorithm extends AbstractAlgorithm {
 	 * over two parent detectors to obtain a child.
 	 * @param mutationRate the probability that mutation is performed 
 	 * in a bit in the detector schema.
+	 * @param elitism percentage of the best individuals to be maintained across
+	 * generations.
 	 * @param maxGenerations the maximum number of generations of the 
 	 * algorithm.
 	 */
 	public EvolutionaryAlgorithm (int speciesSize, double typeBias, double generalityBias, 
-								  double crossoverRate, double mutationRate, int maxGenerations) {
+								  double crossoverRate, double mutationRate, double elitism, int maxGenerations) {
 		super(speciesSize, typeBias, generalityBias, maxGenerations);
 		this.crossoverRate = crossoverRate;
 		this.mutationRate = mutationRate;
+		this.elitism = elitism;
 	}
 	
 	/**
@@ -103,6 +112,13 @@ public class EvolutionaryAlgorithm extends AbstractAlgorithm {
 			// Generates the new populations.
 			for (Type type : Type.values()) {
 				List<Detector> newDetectors = new LinkedList<Detector>();
+				
+				// Keeps the best individuals to maintain the elitism.
+				for (int i = 0; i < detectors.get(type).size() * elitism; i++) {
+					newDetectors.add(detectors.get(type).get(i));
+				}
+				
+				// Selects the new detectors.
 				roulette = new RouletteSelector(detectors.get(type));
 				while (newDetectors.size() < detectors.get(type).size()) {
 					newDetectors.add(generateChildDetector(roulette, crossover, mutation));

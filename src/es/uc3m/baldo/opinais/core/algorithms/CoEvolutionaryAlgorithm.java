@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import es.uc3m.baldo.opinais.core.Individual;
 import es.uc3m.baldo.opinais.core.detectors.Detector;
@@ -44,16 +43,14 @@ public class CoEvolutionaryAlgorithm extends EvolutionaryAlgorithm {
 	 * over two parent detectors to obtain a child.
 	 * @param mutationRate the probability that mutation is performed 
 	 * in a bit in the detector schema.
+	 * @param elitism percentage of the best individuals to be maintained across
+	 * generations.
 	 * @param maxGenerations the maximum number of generations of the 
 	 * algorithm.
 	 */
 	public CoEvolutionaryAlgorithm (int speciesSize, double typeBias, double generalityBias, 
-								    double crossoverRate, double mutationRate, int maxGenerations, 
-								    Set<Individual> individuals) {
-		super(speciesSize, typeBias, generalityBias, crossoverRate, mutationRate, 
-			  maxGenerations);
-		this.crossoverRate = crossoverRate;
-		this.mutationRate = mutationRate;
+								    double crossoverRate, double mutationRate, double elitism, int maxGenerations) {
+		super(speciesSize, typeBias, generalityBias, crossoverRate, mutationRate, elitism, maxGenerations);
 	}
 	
 	/**
@@ -112,9 +109,17 @@ public class CoEvolutionaryAlgorithm extends EvolutionaryAlgorithm {
 				// Sorts the list of detectors by fitness
 				Collections.sort(detectors.get(type));
 			}
+			
 			// Generates the new populations.
 			for (Type type : Type.values()) {
 				List<Detector> newDetectors = new LinkedList<Detector>();
+				
+				// Keeps the best individuals to maintain the elitism.
+				for (int i = 0; i < detectors.get(type).size() * elitism; i++) {
+					newDetectors.add(detectors.get(type).get(i));
+				}
+				
+				// Selects the new detectors.
 				roulette = new RouletteSelector(detectors.get(type));
 				while (newDetectors.size() < detectors.get(type).size()) {
 					newDetectors.add(generateChildDetector(roulette, crossover, mutation));
@@ -128,7 +133,7 @@ public class CoEvolutionaryAlgorithm extends EvolutionaryAlgorithm {
 			if (maxGenerations >= 100 && generation % (maxGenerations / 100) == 0) {
 				System.out.println("\t" + generation / (maxGenerations / 100) + "% completed.");
 			}
-			
+					
 			// Increases the generations counter.
 			generation++;
 		}
@@ -191,7 +196,7 @@ public class CoEvolutionaryAlgorithm extends EvolutionaryAlgorithm {
 			}
 			
 			// Checks if the inferred type is a hit or a miss.
-			fitness += inferredType == individual.type? 1 : -1;
+			fitness += inferredType == individual.type? 1 : inferredType == null? 0 : -1;
 		}
 		
 		// Fitness is calculated and normalized to obtain a number in the range [0,1].

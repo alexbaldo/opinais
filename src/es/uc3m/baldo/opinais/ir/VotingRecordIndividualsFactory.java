@@ -12,33 +12,34 @@ import java.util.Set;
 import es.uc3m.baldo.opinais.core.Bit;
 import es.uc3m.baldo.opinais.core.Individual;
 import es.uc3m.baldo.opinais.core.types.Type;
-import es.uc3m.baldo.opinais.ir.extractors.TextFeaturesExtractor;
 import es.uc3m.baldo.opinais.ir.items.Item;
-import es.uc3m.baldo.opinais.ir.items.TextItem;
+import es.uc3m.baldo.opinais.ir.items.VotingRecord;
 import es.uc3m.baldo.opinais.ir.preprocessors.PreProcessor;
 import es.uc3m.baldo.opinais.ir.readers.Reader;
-import es.uc3m.baldo.opinais.ir.vectorizers.TextVectorizer;
+import es.uc3m.baldo.opinais.ir.vectorizers.VotingRecordVectorizer;
 
 /**
- * TextInvidualsFactory.
- * <p>Generates a set of text individuals from a source file.</p>
- * 
- * @param <T> the type of the items to be converted to individuals.
+ * VotingRecordsInvidualsFactory.
+ * <p>Generates a set of individuals from a source file
+ * containing voting records.</p>
+ *  <p>The file format corresponds to the Congressional Voting Records Dataset
+ * from the UCI Machine Learning Repository
+ * (http://archive.ics.uci.edu/ml/datasets/Congressional+Voting+Records).</p>
  * 
  * @author Alejandro Baldominos
  */
-public class TextIndividualsFactory<T extends TextItem> implements IndividualsFactory<T> {
+public class VotingRecordIndividualsFactory implements IndividualsFactory<VotingRecord> {
 	
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Set<Individual> makeIndividuals (File inputFile, Reader<T> reader, 
+	public Set<Individual> makeIndividuals (File inputFile, Reader<VotingRecord> reader, 
 											List<PreProcessor<String>> preprocessors, int nFeatures, int nIndividuals, boolean isBalanced) {
 		
 		System.out.println("Reading the input file...");
 		// Reads the input file and retrieves a set of items.
-		Set<T> items = reader.read(inputFile);
+		Set<VotingRecord> items = reader.read(inputFile);
 				
 		// Selects a subset of random individuals
 		// (only if the property is specified).
@@ -46,7 +47,7 @@ public class TextIndividualsFactory<T extends TextItem> implements IndividualsFa
 			System.out.println("Selecting random items...");
 			
 			// Represents the set of items as a list.
-			List<T> itemsList = new LinkedList<>(items);
+			List<VotingRecord> itemsList = new LinkedList<>(items);
 			
 			// Randomizes the list of items.
 			Collections.shuffle(itemsList);
@@ -71,7 +72,7 @@ public class TextIndividualsFactory<T extends TextItem> implements IndividualsFa
 					remainingType.put(type, remaining / Type.values().length);
 				}
 				
-				for (T item : itemsList) {
+				for (VotingRecord item : itemsList) {
 					Type type = item.getType();
 					
 					// This item is only stored is there is room for more items of this type.
@@ -101,24 +102,11 @@ public class TextIndividualsFactory<T extends TextItem> implements IndividualsFa
 			System.out.println("\t\t" + type + ": " + typeOccurrences + " (" + 100 * (double) typeOccurrences / items.size() + "%)");
 		}
 		
-		// Executes the specified preprocessors over the items.
-		System.out.println("Executing the preprocessors...");
-		for (PreProcessor<String> preprocessor : preprocessors) {
-			for (TextItem item : items) {
-				item.setText(preprocessor.process(item.getText()));
-			}
-		}
-		
-		// Retrieves the list of features.
-		System.out.println("Retrieving the list of features...");
-		TextFeaturesExtractor extractor = new TextFeaturesExtractor(nFeatures);
-		String[] features = extractor.extractFeatures(items);
-		
 		// Vectorizes each item into an individual and adds it to the set.
 		System.out.println("Vectorizing the individuals...");
 		Set<Individual> individuals = new HashSet<Individual>();
-		TextVectorizer vectorizer = new TextVectorizer(features);
-		for (TextItem item : items) {
+		VotingRecordVectorizer vectorizer = new VotingRecordVectorizer();
+		for (VotingRecord item : items) {
 			Bit[] bits = vectorizer.vectorize(item);
 			individuals.add(new Individual(item.getType(), bits));
 		}

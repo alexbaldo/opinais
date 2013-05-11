@@ -23,7 +23,7 @@ public class TweetFactory implements TextItemFactory<Tweet, String> {
 	/**
 	 * <p>Generates a new tweet from an input line.</p>
 	 * @param line the input line, which must comply with the next format:
-	 * <i>type</i>;;;<i>id</i>;;;<i>text
+	 * <i>type</i>;;;<i>id</i>;;;<i>text</i>
 	 * Each of these fields has an specific meaning:
 	 * <ul>
 	 * <li><strong>type</strong>: the class for the tweet, which may either be "+"
