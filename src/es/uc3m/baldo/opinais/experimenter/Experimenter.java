@@ -169,11 +169,11 @@ public class Experimenter {
 		// Iterates through the confusion matrix.
 		for (Type realType : Type.values()) {
 			hits += confusionMatrix.get(realType).get(realType);
-			for (Type inferredType : Type.values()) {
+			for (Type inferredType : confusionMatrix.get(realType).keySet()) {
 					individuals += confusionMatrix.get(realType).get(inferredType);
 			}
 		}
-
+		
 		// The hit rate is calculated as the ratio between the total number
 		// of hits and the number of individuals.
 		return (double) hits / individuals;

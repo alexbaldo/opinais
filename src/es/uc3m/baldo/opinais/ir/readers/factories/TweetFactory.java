@@ -14,11 +14,11 @@ import es.uc3m.baldo.opinais.ir.items.Tweet;
 public class TweetFactory implements TextItemFactory<Tweet, String> {
 
 	/*
-	 * The separator in this case is composed of three consecutive
-	 * semicolons. This separator is chosen because it is not expected
-	 * to be part of an actual tweet, while only one semicolon could.
+	 * The separator in this case is a tab. This separator is chosen 
+	 * because it is not expected to be part of an actual tweet, 
+	 * while only one semicolon could.
 	 */
-	private static final Pattern SEPARATOR = Pattern.compile(";;;");
+	private static final Pattern SEPARATOR = Pattern.compile("\t");
 	
 	/**
 	 * <p>Generates a new tweet from an input line.</p>
@@ -39,10 +39,15 @@ public class TweetFactory implements TextItemFactory<Tweet, String> {
 		String[] tokens = SEPARATOR.split(line);
 		
 		// Extracts the tweet type.
-		Type type = Type.valueOf(tokens[0]);
+		Type type = null;
+		try {
+			type = Type.valueOf(tokens[0]);
+		} catch (IllegalArgumentException e) {
+			return null;
+		}
 		
 		// Extracts the tweet id.
-		int id = Integer.parseInt(tokens[1]);
+		long id = Long.parseLong(tokens[1]);
 		
 		// Extracts the tweet text.
 		String text = tokens[2];

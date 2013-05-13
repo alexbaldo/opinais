@@ -40,10 +40,14 @@ public class TweetReader implements Reader<Tweet> {
 			// object is created and stored for each line.
 			String line;
 			while ((line = in.readLine()) != null) {
-				tweets.add(factory.make(line));
+				Tweet tweet = factory.make(line);
+				if (tweet != null) {
+					tweets.add(tweet);
+				}
 			}
 		} catch (Exception e) {
 			/* TODO Manage errors. */
+			e.printStackTrace();
 		} finally {
 			try {
 				// Closes the input reader.

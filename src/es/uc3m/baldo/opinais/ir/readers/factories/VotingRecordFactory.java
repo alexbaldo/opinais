@@ -41,7 +41,12 @@ public class VotingRecordFactory implements Factory<VotingRecord, String> {
 		String[] tokens = SEPARATOR.split(line);
 		
 		// Extracts the voting record type.
-		Type type = Type.valueOf(tokens[0]);
+		Type type = null;
+		try {
+			type = Type.valueOf(tokens[0]);
+		} catch (IllegalArgumentException e) {
+			return null;
+		}
 		
 		// Extracts the votes.
 		char[] votes = new char[tokens.length - 1];

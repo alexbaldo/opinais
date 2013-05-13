@@ -150,6 +150,10 @@ public class OpinaisProperties {
 						algorithmTypes[i] = double.class;
 						algorithmParameters[i] = Double.parseDouble(property);
 						break;
+					case "Boolean":
+						algorithmTypes[i] = boolean.class;
+						algorithmParameters[i] = Boolean.parseBoolean(property);
+						break;
 					case "String":
 						algorithmTypes[i] = String.class;
 						algorithmParameters[i] = property;

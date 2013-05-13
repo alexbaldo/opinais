@@ -11,8 +11,8 @@ import es.uc3m.baldo.opinais.core.detectors.Detector;
 import es.uc3m.baldo.opinais.core.operators.CrossoverOperator;
 import es.uc3m.baldo.opinais.core.operators.MutationOperator;
 import es.uc3m.baldo.opinais.core.types.Type;
-import es.uc3m.baldo.opinais.selectors.RouletteSelector;
-import es.uc3m.baldo.opinais.selectors.Selector;
+import es.uc3m.baldo.opinais.core.selectors.RouletteSelector;
+import es.uc3m.baldo.opinais.core.selectors.Selector;
 
 /**
  * EvolutionaryAlgorithm.

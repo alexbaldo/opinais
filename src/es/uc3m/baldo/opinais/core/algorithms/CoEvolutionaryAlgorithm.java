@@ -11,7 +11,7 @@ import es.uc3m.baldo.opinais.core.detectors.Detector;
 import es.uc3m.baldo.opinais.core.operators.CrossoverOperator;
 import es.uc3m.baldo.opinais.core.operators.MutationOperator;
 import es.uc3m.baldo.opinais.core.types.Type;
-import es.uc3m.baldo.opinais.selectors.RouletteSelector;
+import es.uc3m.baldo.opinais.core.selectors.RouletteSelector;
 
 /**
  * CoEvolutionaryAlgorithm.
@@ -33,6 +33,13 @@ import es.uc3m.baldo.opinais.selectors.RouletteSelector;
 public class CoEvolutionaryAlgorithm extends EvolutionaryAlgorithm {
 		
 	/**
+	 * <p>Whether the cooperative fitness function must penalize the
+	 * case where the individual remains unclassified, or just ignore
+	 * it.</p>
+	 */
+	protected boolean penalizeUnclassified;
+	
+	/**
 	 * <p>Builds a new co-evolutionary algorithm.</p>
 	 * @param speciesSize the size of the detectors population.
 	 * @param typeBias the probability that a randomly created detector
@@ -45,12 +52,16 @@ public class CoEvolutionaryAlgorithm extends EvolutionaryAlgorithm {
 	 * in a bit in the detector schema.
 	 * @param elitism percentage of the best individuals to be maintained across
 	 * generations.
+	 * @param penalizeUnclassified whether the cooperative fitness function must
+	 * penalize the case where the individual remains unclassified
 	 * @param maxGenerations the maximum number of generations of the 
 	 * algorithm.
 	 */
 	public CoEvolutionaryAlgorithm (int speciesSize, double typeBias, double generalityBias, 
-								    double crossoverRate, double mutationRate, double elitism, int maxGenerations) {
+								    double crossoverRate, double mutationRate, double elitism, 
+								    boolean penalizeUnclassified, int maxGenerations) {
 		super(speciesSize, typeBias, generalityBias, crossoverRate, mutationRate, elitism, maxGenerations);
+		this.penalizeUnclassified = penalizeUnclassified;
 	}
 	
 	/**
@@ -196,7 +207,8 @@ public class CoEvolutionaryAlgorithm extends EvolutionaryAlgorithm {
 			}
 			
 			// Checks if the inferred type is a hit or a miss.
-			fitness += inferredType == individual.type? 1 : inferredType == null? 0 : -1;
+			double penalty = penalizeUnclassified ? 1 : 0;
+			fitness += inferredType == individual.type? 1 : inferredType == null? -penalty : -1;
 		}
 		
 		// Fitness is calculated and normalized to obtain a number in the range [0,1].

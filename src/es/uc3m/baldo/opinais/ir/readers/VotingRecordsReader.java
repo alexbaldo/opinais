@@ -43,7 +43,10 @@ public class VotingRecordsReader implements Reader<VotingRecord> {
 			// object is created and stored for each line.
 			String line;
 			while ((line = in.readLine()) != null) {
-				records.add(factory.make(line));
+				VotingRecord record = factory.make(line);
+				if (record != null) {
+					records.add(record);
+				}
 			}
 		} catch (Exception e) {
 			/* TODO Manage errors. */

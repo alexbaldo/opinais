@@ -17,7 +17,7 @@ public class Tweet extends TextItem {
 	 * as it is the only final field.
 	 * 
 	 */
-	private final int id;
+	private final long id;
 		
 	/**
 	 * <p>Creates a new tweet.</p>
@@ -25,7 +25,7 @@ public class Tweet extends TextItem {
 	 * @param text the tweet's text.
 	 * @param type the type the tweet belongs to.
 	 */
-	public Tweet (int id, String text, Type type) {
+	public Tweet (long id, String text, Type type) {
 		super(text, type);
 		this.id = id;
 	}
@@ -54,7 +54,7 @@ public class Tweet extends TextItem {
 	public int hashCode () {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + id;
+		result = (int) (prime * result + id);
 		return result;
 	}
 	
