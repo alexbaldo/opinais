@@ -22,6 +22,7 @@ public class TweetReader implements Reader<Tweet> {
 	 * @param file the input file.
 	 * @return a set of tweets extracted from the input file.
 	 */
+	@Override
 	public Set<Tweet> read (File file) {
 		// Stores the tweets read from the file.
 		Set<Tweet> tweets = new HashSet<Tweet>();

@@ -8,7 +8,7 @@ package es.uc3m.baldo.opinais.ir.preprocessors;
  * 
  * @author Alejandro Baldominos
  */
-public class LowerCaser implements PreProcessor<String> {
+public class LowerCaser implements Preprocessor<String> {
 
 	/**
 	 * <p>Converts all characters from a text string to lower case.</p>

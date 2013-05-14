@@ -24,7 +24,7 @@ import es.uc3m.baldo.opinais.ir.items.TextItem;
  * 
  * @author Alejandro Baldominos
  */
-public class TextFeaturesExtractor implements FeaturesExtractor<String, TextItem> {
+public class TextFeaturesExtractor<T extends TextItem> implements FeaturesExtractor<String, T> {
 	
 	/* 
 	 * Text separator, usually one or more empty spaces.
@@ -56,11 +56,9 @@ public class TextFeaturesExtractor implements FeaturesExtractor<String, TextItem
 	 * @param items the set of items needed to extract the features.
 	 * @return a sorted array of string containing the features (words).
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
-	public String[] extractFeatures (Set<? extends TextItem> items) {
-		// Stores the sorted list of features to be extracted.		
-		String[] features = new String[nFeatures];
-		
+	public Feature<String>[] extractFeatures (Set<T> items) {		
 		// Calculates the total number of items.
 		int size = items.size();
 		
@@ -148,12 +146,13 @@ public class TextFeaturesExtractor implements FeaturesExtractor<String, TextItem
 		
 		System.out.println("\tExtracting most relevant features...");
 		// Extracts the n most relevant features.
+		Feature<String>[] features = new Feature[Math.min(valuedFeatures.size(), nFeatures)];
 		int i = 0;
 		for (Feature<String> feature : valuedFeatures) {
 			if (i >= nFeatures) {
 				break;
 			}
-			features[i] = feature.getValue();
+			features[i] = feature;
 			i++;
 		}
 

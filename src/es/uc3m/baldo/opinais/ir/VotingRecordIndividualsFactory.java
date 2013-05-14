@@ -14,7 +14,7 @@ import es.uc3m.baldo.opinais.core.Individual;
 import es.uc3m.baldo.opinais.core.types.Type;
 import es.uc3m.baldo.opinais.ir.items.Item;
 import es.uc3m.baldo.opinais.ir.items.VotingRecord;
-import es.uc3m.baldo.opinais.ir.preprocessors.PreProcessor;
+import es.uc3m.baldo.opinais.ir.preprocessors.Preprocessor;
 import es.uc3m.baldo.opinais.ir.readers.Reader;
 import es.uc3m.baldo.opinais.ir.vectorizers.VotingRecordVectorizer;
 
@@ -35,7 +35,7 @@ public class VotingRecordIndividualsFactory implements IndividualsFactory<Voting
 	 */
 	@Override
 	public Set<Individual> makeIndividuals (File inputFile, Reader<VotingRecord> reader, 
-											List<PreProcessor<String>> preprocessors, int nFeatures, int nIndividuals, boolean isBalanced) {
+											List<Preprocessor<String>> preprocessors, int nFeatures, int nIndividuals, boolean isBalanced) {
 		
 		System.out.println("Reading the input file...");
 		// Reads the input file and retrieves a set of items.

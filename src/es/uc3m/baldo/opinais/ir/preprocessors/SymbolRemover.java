@@ -8,7 +8,7 @@ package es.uc3m.baldo.opinais.ir.preprocessors;
  * 
  * @author Alejandro Baldominos
  */
-public class SymbolRemover implements PreProcessor<String> {
+public class SymbolRemover implements Preprocessor<String> {
 
 	/**
 	 * <p>Removes all non-alphanumeric characters from a text string.</p>

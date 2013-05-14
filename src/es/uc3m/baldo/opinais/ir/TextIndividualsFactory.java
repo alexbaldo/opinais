@@ -12,10 +12,11 @@ import java.util.Set;
 import es.uc3m.baldo.opinais.core.Bit;
 import es.uc3m.baldo.opinais.core.Individual;
 import es.uc3m.baldo.opinais.core.types.Type;
+import es.uc3m.baldo.opinais.ir.extractors.Feature;
 import es.uc3m.baldo.opinais.ir.extractors.TextFeaturesExtractor;
 import es.uc3m.baldo.opinais.ir.items.Item;
 import es.uc3m.baldo.opinais.ir.items.TextItem;
-import es.uc3m.baldo.opinais.ir.preprocessors.PreProcessor;
+import es.uc3m.baldo.opinais.ir.preprocessors.Preprocessor;
 import es.uc3m.baldo.opinais.ir.readers.Reader;
 import es.uc3m.baldo.opinais.ir.vectorizers.TextVectorizer;
 
@@ -34,7 +35,7 @@ public class TextIndividualsFactory<T extends TextItem> implements IndividualsFa
 	 */
 	@Override
 	public Set<Individual> makeIndividuals (File inputFile, Reader<T> reader, 
-											List<PreProcessor<String>> preprocessors, int nFeatures, int nIndividuals, boolean isBalanced) {
+											List<Preprocessor<String>> preprocessors, int nFeatures, int nIndividuals, boolean isBalanced) {
 		
 		System.out.println("Reading the input file...");
 		// Reads the input file and retrieves a set of items.
@@ -103,7 +104,7 @@ public class TextIndividualsFactory<T extends TextItem> implements IndividualsFa
 		
 		// Executes the specified preprocessors over the items.
 		System.out.println("Executing the preprocessors...");
-		for (PreProcessor<String> preprocessor : preprocessors) {
+		for (Preprocessor<String> preprocessor : preprocessors) {
 			for (TextItem item : items) {
 				item.setText(preprocessor.process(item.getText()));
 			}
@@ -111,9 +112,9 @@ public class TextIndividualsFactory<T extends TextItem> implements IndividualsFa
 		
 		// Retrieves the list of features.
 		System.out.println("Retrieving the list of features...");
-		TextFeaturesExtractor extractor = new TextFeaturesExtractor(nFeatures);
-		String[] features = extractor.extractFeatures(items);
-		
+		TextFeaturesExtractor<T> extractor = new TextFeaturesExtractor<>(nFeatures);
+		Feature<String>[] features = extractor.extractFeatures(items);
+			
 		// Vectorizes each item into an individual and adds it to the set.
 		System.out.println("Vectorizing the individuals...");
 		Set<Individual> individuals = new HashSet<Individual>();

@@ -15,7 +15,7 @@ import org.tartarus.snowball.ext.PorterStemmer;
  * 
  * @author Alejandro Baldominos
  */
-public class Stemmer implements PreProcessor<String> {
+public class Stemmer implements Preprocessor<String> {
 
 	/**
 	 * <p>Reduces each word in an input text to its stem.</p>

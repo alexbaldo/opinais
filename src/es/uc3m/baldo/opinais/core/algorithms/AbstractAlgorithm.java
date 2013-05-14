@@ -2,13 +2,12 @@ package es.uc3m.baldo.opinais.core.algorithms;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
+import es.uc3m.baldo.opinais.core.Classifier;
 import es.uc3m.baldo.opinais.core.Individual;
 import es.uc3m.baldo.opinais.core.detectors.Detector;
 import es.uc3m.baldo.opinais.core.detectors.DetectorFactory;
-import es.uc3m.baldo.opinais.core.types.Type;
 
 /**
  * <p>Provides an abstract implementation of an algorithm.</p>
@@ -99,13 +98,13 @@ public abstract class AbstractAlgorithm implements Algorithm {
 	/**
 	 * <p>Runs the AIS-based algorithm to retrieve
 	 * a detector for each possible type.</p>
-	 * <p>This method must be overriden and implemented
+	 * <p>This method must be overridden and implemented
 	 * by a child class.</p>
-	 * @return a map which maps a type to the best
+	 * @return a classifier which maps a type to the best
 	 * detector found by the algorithm for that type.
 	 */
 	@Override
-	public abstract Map<Type, Detector> run ();
+	public abstract Classifier run ();
 	
 	/**
 	 * <p>Decides whether the algorithm must stop.</p>

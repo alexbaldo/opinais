@@ -5,7 +5,8 @@ import java.util.List;
 import java.util.Set;
 
 import es.uc3m.baldo.opinais.core.Individual;
-import es.uc3m.baldo.opinais.ir.preprocessors.PreProcessor;
+import es.uc3m.baldo.opinais.ir.items.Item;
+import es.uc3m.baldo.opinais.ir.preprocessors.Preprocessor;
 import es.uc3m.baldo.opinais.ir.readers.Reader;
 
 /**
@@ -16,7 +17,7 @@ import es.uc3m.baldo.opinais.ir.readers.Reader;
  * 
  * @author Alejandro Baldominos
  */
-public interface IndividualsFactory<T> {
+public interface IndividualsFactory<T extends Item> {
 	
 	/**
 	 * <p>Generates a set of individuals from a source file.</p>
@@ -33,6 +34,6 @@ public interface IndividualsFactory<T> {
 	 * @return the set of generated individuals.
 	 */
 	public Set<Individual> makeIndividuals (File inputFile, Reader<T> reader, 
-											List<PreProcessor<String>> preprocessors, int nFeatures, int nIndividuals, boolean isBalanced);
+											List<Preprocessor<String>> preprocessors, int nFeatures, int nIndividuals, boolean isBalanced);
 
 }

@@ -3,6 +3,8 @@ package es.uc3m.baldo.opinais.ir.readers;
 import java.io.File;
 import java.util.Set;
 
+import es.uc3m.baldo.opinais.ir.items.Item;
+
 /**
  * Reader.
  * <p>All readers must implement this interface.</p>
@@ -11,7 +13,7 @@ import java.util.Set;
  * 
  * @author Alejandro Baldominos
  */
-public interface Reader<T> {
+public interface Reader<T extends Item> {
 
 	/**
 	 * <p>Reads a set of objects of the specified type which 

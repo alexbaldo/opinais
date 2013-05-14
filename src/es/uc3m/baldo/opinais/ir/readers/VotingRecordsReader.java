@@ -25,6 +25,7 @@ public class VotingRecordsReader implements Reader<VotingRecord> {
 	 * @param file the input file.
 	 * @return a set of voting records extracted from the input file.
 	 */
+	@Override
 	public Set<VotingRecord> read (File file) {
 		// Stores the voting records read from the file.
 		Set<VotingRecord> records = new HashSet<VotingRecord>();

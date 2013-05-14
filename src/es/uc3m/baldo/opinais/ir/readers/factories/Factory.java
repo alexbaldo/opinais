@@ -9,13 +9,13 @@ package es.uc3m.baldo.opinais.ir.readers.factories;
  * 
  * @author Alejandro Baldominos
  */
-public interface Factory<T,E> {
+public interface Factory<T, E> {
 	
 	/**
 	 * Generates an instance of an item given a certain object.
-	 * @param item the input item, which will serve to make the new object.
+	 * @param input the input item, which will serve to make the new object.
 	 * @return a text item.
 	 */
-	public T make (E item);
+	public T make (E input);
 
 }

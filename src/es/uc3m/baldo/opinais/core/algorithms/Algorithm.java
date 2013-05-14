@@ -1,11 +1,9 @@
 package es.uc3m.baldo.opinais.core.algorithms;
 
-import java.util.Map;
 import java.util.Set;
 
+import es.uc3m.baldo.opinais.core.Classifier;
 import es.uc3m.baldo.opinais.core.Individual;
-import es.uc3m.baldo.opinais.core.detectors.Detector;
-import es.uc3m.baldo.opinais.core.types.Type;
 
 /**
  * Algorithm.
@@ -18,10 +16,10 @@ public interface Algorithm {
 	/**
 	 * <p>Runs the AIS-based algorithm to retrieve
 	 * a detector for each possible type.</p>
-	 * @return a map which maps a type to the best
+	 * @return a classifier, which maps a type to the best
 	 * detector found by the algorithm for that type.
 	 */
-	public Map<Type, Detector> run ();
+	public Classifier run ();
 	
 	/**
 	 * <p>Sets the training individuals.</p>

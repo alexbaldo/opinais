@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 import es.uc3m.baldo.opinais.core.Bit;
+import es.uc3m.baldo.opinais.ir.extractors.Feature;
 import es.uc3m.baldo.opinais.ir.items.TextItem;
 
 /**
@@ -38,10 +39,10 @@ public class TextVectorizer implements Vectorizer<TextItem> {
 	 * @param features the array of words which represent
 	 * the individual features.
 	 */
-	public TextVectorizer (String[] features) {
+	public TextVectorizer (Feature<String>[] features) {
 		this.features = new HashMap<String, Integer>();
 		for (int i = 0; i < features.length; i++) {
-			this.features.put(features[i], i);
+			this.features.put(features[i].getValue(), i);
 		}
 	}
 	

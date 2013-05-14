@@ -13,7 +13,7 @@ import java.util.Set;
  * 
  * @author Alejandro Baldominos
  */
-public class StopWordsRemover implements PreProcessor<String> {
+public class StopWordsRemover implements Preprocessor<String> {
 
 	/*
 	 * Stores all the stop-words.

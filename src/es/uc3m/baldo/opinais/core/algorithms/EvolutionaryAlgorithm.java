@@ -6,13 +6,14 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import es.uc3m.baldo.opinais.core.Classifier;
 import es.uc3m.baldo.opinais.core.Individual;
 import es.uc3m.baldo.opinais.core.detectors.Detector;
 import es.uc3m.baldo.opinais.core.operators.CrossoverOperator;
 import es.uc3m.baldo.opinais.core.operators.MutationOperator;
-import es.uc3m.baldo.opinais.core.types.Type;
 import es.uc3m.baldo.opinais.core.selectors.RouletteSelector;
 import es.uc3m.baldo.opinais.core.selectors.Selector;
+import es.uc3m.baldo.opinais.core.types.Type;
 
 /**
  * EvolutionaryAlgorithm.
@@ -78,11 +79,11 @@ public class EvolutionaryAlgorithm extends AbstractAlgorithm {
 	 * <p>A roulette selector method is used to select individuals. Uniform
 	 * crossover and bit mutation is implemented to reproduce and mutate
 	 * detectors.</p>
-	 * @return a map which maps a type to the best detector found by 
+	 * @return a classifier which maps a type to the best detector found by 
 	 * the algorithm for that type.
 	 */
 	@Override
-	public Map<Type, Detector> run () {
+	public Classifier run () {
 		// Creates the initial population.
 		initializePopulation();
 		
@@ -155,7 +156,7 @@ public class EvolutionaryAlgorithm extends AbstractAlgorithm {
 			System.out.println("\t" + detectors.get(type).get(0));
 		}
 
-		return bestDetectors;
+		return new Classifier(bestDetectors);
 	}
 	
 	/**

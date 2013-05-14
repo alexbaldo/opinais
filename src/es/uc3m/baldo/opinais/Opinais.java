@@ -4,9 +4,9 @@ import java.io.File;
 import java.util.Map;
 import java.util.Set;
 
+import es.uc3m.baldo.opinais.core.Classifier;
 import es.uc3m.baldo.opinais.core.Individual;
 import es.uc3m.baldo.opinais.core.OpinaisProperties;
-import es.uc3m.baldo.opinais.core.detectors.Detector;
 import es.uc3m.baldo.opinais.core.types.Type;
 import es.uc3m.baldo.opinais.experimenter.Experimenter;
 
@@ -53,15 +53,15 @@ public class Opinais {
 		// Runs the algorithm.
 		System.out.println("Running the evolutionary algorithm...");
 		props.algorithm.setIndividuals(trainingSet);
-		Map<Type,Detector> bestDetectors = props.algorithm.run();
+		Classifier classifier = props.algorithm.run();
 		
 		// Gets the results.
-		Map<Type, Map<Type, Integer>> confusionMatrixTrain = experimenter.getConfusionMatrix(bestDetectors, trainingSet);
+		Map<Type, Map<Type, Integer>> confusionMatrixTrain = experimenter.getConfusionMatrix(classifier, trainingSet);
 		System.out.println("Confussion Matrix over Training Set:");
 		experimenter.printConfusionMatrix(confusionMatrixTrain);
 		System.out.println("Hit Rate over Training Set: " + experimenter.calculateHitRate(confusionMatrixTrain));
 		
-		Map<Type, Map<Type, Integer>> confusionMatrixTest = experimenter.getConfusionMatrix(bestDetectors, testSet);
+		Map<Type, Map<Type, Integer>> confusionMatrixTest = experimenter.getConfusionMatrix(classifier, testSet);
 		System.out.println("Confussion Matrix over Test Set:");
 		experimenter.printConfusionMatrix(confusionMatrixTest);
 		System.out.println("Hit Rate over Test Set: " + experimenter.calculateHitRate(confusionMatrixTest));

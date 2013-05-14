@@ -10,7 +10,7 @@ import es.uc3m.baldo.opinais.core.algorithms.Algorithm;
 import es.uc3m.baldo.opinais.core.types.TypeBuilder;
 import es.uc3m.baldo.opinais.ir.IndividualsFactory;
 import es.uc3m.baldo.opinais.ir.items.Item;
-import es.uc3m.baldo.opinais.ir.preprocessors.PreProcessor;
+import es.uc3m.baldo.opinais.ir.preprocessors.Preprocessor;
 import es.uc3m.baldo.opinais.ir.readers.Reader;
 
 /**
@@ -64,7 +64,7 @@ public class OpinaisProperties {
 	 * <p>Sorted list of pre-processors to be executed over the
 	 * individuals.</p>
 	 */
-	public List<PreProcessor<String>> preprocessors;
+	public List<Preprocessor<String>> preprocessors;
 	
 	/**
 	 * <p>The percentage of individuals to be stored in the test set.</p>
@@ -84,7 +84,7 @@ public class OpinaisProperties {
 	 * <p>Initializes the properties class.</p>
 	 */
 	public OpinaisProperties () {
-		this.preprocessors = new LinkedList<PreProcessor<String>>();
+		this.preprocessors = new LinkedList<Preprocessor<String>>();
 	}
 	
 	/**
@@ -122,7 +122,7 @@ public class OpinaisProperties {
 			if (properties.containsKey("preprocessors")) {
 				String[] preprocessors = properties.getProperty("preprocessors").split(",");
 				for (String preprocessor : preprocessors) {
-					opinaisProps.preprocessors.add((PreProcessor<String>)Class.forName("es.uc3m.baldo.opinais.ir.preprocessors." + preprocessor).newInstance());
+					opinaisProps.preprocessors.add((Preprocessor<String>)Class.forName("es.uc3m.baldo.opinais.ir.preprocessors." + preprocessor).newInstance());
 				}
 			}
 			

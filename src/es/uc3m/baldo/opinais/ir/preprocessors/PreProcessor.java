@@ -3,14 +3,14 @@ package es.uc3m.baldo.opinais.ir.preprocessors;
 import java.util.regex.Pattern;
 
 /**
- * PreProcessor.
+ * Preprocessor.
  * <p>All pre-processors must implement this interface.</p>
  * 
  * @param <T> type of object.
  * 
  * @author Alejandro Baldominos
  */
-public interface PreProcessor<T> {
+public interface Preprocessor<T> {
 
 	/* 
 	 * Text separator, usually one or more empty spaces.

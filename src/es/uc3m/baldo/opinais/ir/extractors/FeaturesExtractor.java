@@ -2,6 +2,8 @@ package es.uc3m.baldo.opinais.ir.extractors;
 
 import java.util.Set;
 
+import es.uc3m.baldo.opinais.ir.items.Item;
+
 /**
  * FeaturesExtractor.
  * <p>All features extractors must implement this interface.</p>
@@ -12,7 +14,7 @@ import java.util.Set;
  * 
  * @author Alejandro Baldominos
  */
-public interface FeaturesExtractor<T, E> {
+public interface FeaturesExtractor<E, T extends Item> {
 	
 	/**
 	 * <p>Extracts the features from a set of items and returns them
@@ -20,6 +22,6 @@ public interface FeaturesExtractor<T, E> {
 	 * @param items the set of items needed to extract the features.
 	 * @return a sorted array with the features.
 	 */
-	public T[] extractFeatures (Set<? extends E> items);
+	public Feature<E>[] extractFeatures (Set<T> items);
 
 }

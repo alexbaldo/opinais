@@ -49,7 +49,7 @@ public class TypeBuilder {
             List<Type> values = new ArrayList<>(Arrays.asList(previousValues));
 
             // Builds the new type.
-            Type newType = (Type) makeEnum(Type.class, enumName, values.size());
+            Type newType = makeEnum(Type.class, enumName, values.size());
 
             // Adds the new type to the enumerated.
             values.add(newType);
@@ -77,7 +77,7 @@ public class TypeBuilder {
     	Object[] parms = new Object[] {value, Integer.valueOf(ordinal)};
     	
     	// The constructor for the Enum is retrieved and a new instance is created.
-        return (T) enumClass.cast(getConstructorAccessor(enumClass).newInstance(parms));
+        return enumClass.cast(getConstructorAccessor(enumClass).newInstance(parms));
     }	
     
     /**

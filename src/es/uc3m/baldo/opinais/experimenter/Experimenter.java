@@ -10,8 +10,8 @@ import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
 
+import es.uc3m.baldo.opinais.core.Classifier;
 import es.uc3m.baldo.opinais.core.Individual;
-import es.uc3m.baldo.opinais.core.detectors.Detector;
 import es.uc3m.baldo.opinais.core.types.Type;
 
 /**
@@ -89,11 +89,11 @@ public class Experimenter {
 	/**
 	 * <p>Retrieves the confusion matrix for the inference provided by the best
 	 * detectors over each type of individual.</p>
-	 * @param bestDetectors the best detector for each possible type.
+	 * @param classifier the classifier.
 	 * @param individuals the set of individuals.
 	 * @return the hit ratio.
 	 */
-	public Map<Type,Map<Type, Integer>> getConfusionMatrix (Map<Type, Detector> bestDetectors, Set<Individual> individuals) {
+	public Map<Type,Map<Type, Integer>> getConfusionMatrix (Classifier classifier, Set<Individual> individuals) {
 		// Initializes the confusion matrix.
 		Map<Type,Map<Type, Integer>> matrix = new HashMap<Type, Map<Type, Integer>>();
 		for (Type realType : Type.values()) {
@@ -108,7 +108,7 @@ public class Experimenter {
 		// Iterates through every individual.
 		for (Individual individual : individuals) {
 			// Infers the type.
-			Type inferredType = inferType(bestDetectors, individual);
+			Type inferredType = classifier.classify(individual);
 
 			// Increases the counter for the Real-Inferred matrix.
 			Map<Type, Integer> row = matrix.get(individual.type);
@@ -177,47 +177,5 @@ public class Experimenter {
 		// The hit rate is calculated as the ratio between the total number
 		// of hits and the number of individuals.
 		return (double) hits / individuals;
-	}
-	
-	/**
-	 * <p>Infers the type of an individual given the best
-	 * detector for each type.</p>
-	 * <p>In order to infer the type, each detector is tried to
-	 * match the individual. The inferred type is the type of that
-	 * detector whose matching ratio is valid and exceeds the 
-	 * valid matching ratios of the remaining detectors.</p>
-	 * <p>For a matching ratio to be considered valid, it must
-	 * exceed the detector threshold. Non-valid matching ratios
-	 * are ignored.</p>
-	 * <p>Notice that this inference method may leave unclassified
-	 * individuals, as long as any detector produces a valid matching
-	 * ratio.</p>
-	 * 
-	 * @param bestDetectors the best detector for each possible type.
-	 * @param individual the individual whose type is to be inferred.
-	 * @return the inferred type of the individual.
-	 */
-	public Type inferType (Map<Type, Detector> bestDetectors, Individual individual) {
-		// Stores the inferred type.
-		Type inferredType = null;
-		
-		// Stores the maximum valid matching ratio.
-		double highestMatch = 0.0;
-		
-		// Iterates through all possible types.
-		for (Type type : bestDetectors.keySet()) {
-			// Calculates the matching ratio with the best detector.			
-			Detector detector = bestDetectors.get(type);
-			double match = detector.match(individual);
-			
-			// This type would be the best type so far if its matching ratio
-			// is valid and exceeds the previous best valid matching ratio.
-			if (match > highestMatch && match > detector.decodedThreshold) {
-				highestMatch = match;
-				inferredType = type;
-			}
-		}
-		
-		return inferredType;
 	}
 }
