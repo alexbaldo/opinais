@@ -27,17 +27,17 @@ public class VotingRecord extends Item {
 		
 		/**
 		 * <p>Returns the binary representation for
-		 * this vote, so that 'yea' is represented as 10,
-		 * 'nay' is represented as 01 and 'unknown' is
+		 * this vote, so that 'yea' is represented as 01,
+		 * 'nay' is represented as 10 and 'unknown' is
 		 * represented as 00.</p>
 		 * @return the binary representation for this vote.
 		 */
 		public Bit[] getBinaryRepresentation () {
 			switch (this) {
 				case YEA:
-					return new Bit[] {Bit.ONE, Bit.ZERO};
-				case NAY:
 					return new Bit[] {Bit.ZERO, Bit.ONE};
+				case NAY:
+					return new Bit[] {Bit.ONE, Bit.ZERO};
 				default:
 					return new Bit[] {Bit.ZERO, Bit.ZERO};
 			}
